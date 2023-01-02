@@ -1,0 +1,14 @@
+include: package:pedantic_mono/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/l10n/messages_*.dart
+    - lib/controllers/**.freezed.dart
+    - lib/controllers/**.g.dart
+    - lib/models/**.g.dart
+    - lib/models/**.g.dart
+    - lib/generated/**
+    - ios/**
+    - test/**
+  errors:
+    invalid_annotation_target: ignore
