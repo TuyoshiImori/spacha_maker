@@ -126,6 +126,8 @@ Widget spachaWidget({
                   children: [
                     Subtitle1Text(
                       name != '' ? name : '名前',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       color: nameTextColor(),
                     ),
                     Subtitle1Text('¥ ${formatter.format(price)}'),
@@ -159,7 +161,9 @@ Widget spachaWidget({
               ),
               child: BodyText1Text(
                 message,
+                //maxLines: 5,
                 color: messageTextColor(),
+                overflow: TextOverflow.fade,
               ),
             ),
           ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,6 +10,7 @@ import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/ui/dialogs/finish_saver_dialog.dart';
 import 'package:spacha_maker/ui/pages/printing_page/printing_page.dart';
+import 'package:spacha_maker/ui/widgets/spacha_envelope.dart';
 import 'package:spacha_maker/ui/widgets/spasha_widget.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
@@ -16,8 +19,8 @@ class MakingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final bottomSpace = MediaQuery.of(context).viewInsets.bottom;
-    final globalKey = GlobalKey();
+    final spachaWidgetKey = GlobalKey();
+    final spachaEnvelopeKey = GlobalKey();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -63,50 +66,77 @@ class MakingPage extends StatelessWidget {
           final isCorner = ref.watch(
             makingPageProvider.select((s) => s.isCorner),
           );
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    color: white,
-                    height: 300,
-                    child: SingleChildScrollView(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 20,
-                          ),
-                          child: RepaintBoundary(
-                            key: globalKey,
-                            child: spachaWidget(
-                              context: context,
-                              name: name,
-                              price: price,
-                              message: message,
-                              iconImage: iconImage,
-                              isCorner: isCorner,
+          return Stack(
+            children: [
+              Transform.translate(
+                offset: Offset(
+                  0,
+                  -MediaQuery.of(context).size.height,
+                ),
+                child: RepaintBoundary(
+                  key: spachaEnvelopeKey,
+                  child: spachaEnvelope(
+                    context: context,
+                    name: name,
+                    price: price,
+                    message: message,
+                    iconImage: iconImage,
+                    isCorner: isCorner,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: SingleChildScrollView(
+                  child: ColoredBox(
+                    color: background,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: white,
+                          height: 300,
+                          child: SingleChildScrollView(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 20,
+                                ),
+                                child: RepaintBoundary(
+                                  key: spachaWidgetKey,
+                                  child: spachaWidget(
+                                    context: context,
+                                    name: name,
+                                    price: price,
+                                    message: message,
+                                    iconImage: iconImage,
+                                    isCorner: isCorner,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        _buildIconArea(),
+                        _buildNameArea(),
+                        _buildPriceArea(),
+                        _buildMessageArea(),
+                        _buildCornerArea(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const SizedBox(
+                          height: 320,
+                        ),
+                      ],
                     ),
                   ),
-                  _buildIconArea(),
-                  _buildNameArea(),
-                  _buildPriceArea(),
-                  _buildMessageArea(),
-                  _buildCornerArea(),
-                  const SizedBox(
-                    height: 320,
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           );
         },
       ),
@@ -118,28 +148,43 @@ class MakingPage extends StatelessWidget {
               FloatingActionButton(
                 heroTag: 'printer',
                 onPressed: () async {
-                  await EasyLoading.show(
-                    status: '画像を取り込み中',
-                    maskType: EasyLoadingMaskType.black,
-                  );
-                  final boundary = globalKey.currentContext!.findRenderObject()!
-                      as RenderRepaintBoundary;
-                  final spachaWidget =
-                      await ref.read(makingPageProvider.notifier).exportToImage(
-                            boundary: boundary,
-                            pixelRatio: 5,
-                            isSave: false,
-                          );
-                  final printingArguments = PrintingArguments(
-                    height: globalKey.currentContext!.size!.height,
-                    width: globalKey.currentContext!.size!.width,
-                    spachaWidget: spachaWidget,
-                  );
-                  await EasyLoading.dismiss();
-                  await Navigator.of(context).pushNamed(
-                    RouteGenerator.printingPage,
-                    arguments: printingArguments,
-                  );
+                  final mediaHeight = (MediaQuery.of(context).size.width - 32) *
+                      ((2 * sqrt(2) - 1) / 3);
+                  final widgetHeight =
+                      spachaWidgetKey.currentContext!.size!.height;
+                  print(mediaHeight);
+                  print(widgetHeight);
+                  if (mediaHeight > widgetHeight) {
+                    await EasyLoading.show(
+                      status: '画像を取り込み中',
+                      maskType: EasyLoadingMaskType.black,
+                    );
+                    final boundary = spachaWidgetKey.currentContext!
+                        .findRenderObject()! as RenderRepaintBoundary;
+                    final spachaWidget = await ref
+                        .read(makingPageProvider.notifier)
+                        .exportToImage(
+                          boundary: boundary,
+                          pixelRatio: 5,
+                          isSave: false,
+                        );
+                    final printingArguments = PrintingArguments(
+                      height: spachaWidgetKey.currentContext!.size!.height,
+                      width: spachaWidgetKey.currentContext!.size!.width,
+                      spachaWidget: spachaWidget,
+                    );
+                    await EasyLoading.dismiss();
+                    await Navigator.of(context).pushNamed(
+                      RouteGenerator.printingPage,
+                      arguments: printingArguments,
+                    );
+                  } else {
+                    finishSaverDialog(
+                      message: 'メッセージの文字数を\n減らしてください',
+                      context: context,
+                      backCount: 0,
+                    );
+                  }
                 },
                 child: const Icon(Icons.chevron_right),
               ),
@@ -153,8 +198,8 @@ class MakingPage extends StatelessWidget {
                     status: '画像を取り込み中',
                     maskType: EasyLoadingMaskType.black,
                   );
-                  final boundary = globalKey.currentContext!.findRenderObject()!
-                      as RenderRepaintBoundary;
+                  final boundary = spachaWidgetKey.currentContext!
+                      .findRenderObject()! as RenderRepaintBoundary;
                   ref.read(makingPageProvider.notifier).exportToImage(
                         boundary: boundary,
                         pixelRatio: 5,
