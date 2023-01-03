@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MakingPageState {
   Spacha? get spacha => throw _privateConstructorUsedError;
   File? get iconImage => throw _privateConstructorUsedError;
+  bool get isCorner => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MakingPageStateCopyWith<MakingPageState> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $MakingPageStateCopyWith<$Res> {
           MakingPageState value, $Res Function(MakingPageState) then) =
       _$MakingPageStateCopyWithImpl<$Res, MakingPageState>;
   @useResult
-  $Res call({Spacha? spacha, File? iconImage});
+  $Res call({Spacha? spacha, File? iconImage, bool isCorner});
 
   $SpachaCopyWith<$Res>? get spacha;
 }
@@ -50,6 +51,7 @@ class _$MakingPageStateCopyWithImpl<$Res, $Val extends MakingPageState>
   $Res call({
     Object? spacha = freezed,
     Object? iconImage = freezed,
+    Object? isCorner = null,
   }) {
     return _then(_value.copyWith(
       spacha: freezed == spacha
@@ -60,6 +62,10 @@ class _$MakingPageStateCopyWithImpl<$Res, $Val extends MakingPageState>
           ? _value.iconImage
           : iconImage // ignore: cast_nullable_to_non_nullable
               as File?,
+      isCorner: null == isCorner
+          ? _value.isCorner
+          : isCorner // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -84,7 +90,7 @@ abstract class _$$_MakingPageStateCopyWith<$Res>
       __$$_MakingPageStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Spacha? spacha, File? iconImage});
+  $Res call({Spacha? spacha, File? iconImage, bool isCorner});
 
   @override
   $SpachaCopyWith<$Res>? get spacha;
@@ -103,6 +109,7 @@ class __$$_MakingPageStateCopyWithImpl<$Res>
   $Res call({
     Object? spacha = freezed,
     Object? iconImage = freezed,
+    Object? isCorner = null,
   }) {
     return _then(_$_MakingPageState(
       spacha: freezed == spacha
@@ -113,6 +120,10 @@ class __$$_MakingPageStateCopyWithImpl<$Res>
           ? _value.iconImage
           : iconImage // ignore: cast_nullable_to_non_nullable
               as File?,
+      isCorner: null == isCorner
+          ? _value.isCorner
+          : isCorner // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -120,16 +131,20 @@ class __$$_MakingPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_MakingPageState implements _MakingPageState {
-  const _$_MakingPageState({this.spacha, this.iconImage});
+  const _$_MakingPageState(
+      {this.spacha, this.iconImage, this.isCorner = false});
 
   @override
   final Spacha? spacha;
   @override
   final File? iconImage;
+  @override
+  @JsonKey()
+  final bool isCorner;
 
   @override
   String toString() {
-    return 'MakingPageState(spacha: $spacha, iconImage: $iconImage)';
+    return 'MakingPageState(spacha: $spacha, iconImage: $iconImage, isCorner: $isCorner)';
   }
 
   @override
@@ -139,11 +154,13 @@ class _$_MakingPageState implements _MakingPageState {
             other is _$_MakingPageState &&
             (identical(other.spacha, spacha) || other.spacha == spacha) &&
             (identical(other.iconImage, iconImage) ||
-                other.iconImage == iconImage));
+                other.iconImage == iconImage) &&
+            (identical(other.isCorner, isCorner) ||
+                other.isCorner == isCorner));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, spacha, iconImage);
+  int get hashCode => Object.hash(runtimeType, spacha, iconImage, isCorner);
 
   @JsonKey(ignore: true)
   @override
@@ -154,12 +171,16 @@ class _$_MakingPageState implements _MakingPageState {
 
 abstract class _MakingPageState implements MakingPageState {
   const factory _MakingPageState(
-      {final Spacha? spacha, final File? iconImage}) = _$_MakingPageState;
+      {final Spacha? spacha,
+      final File? iconImage,
+      final bool isCorner}) = _$_MakingPageState;
 
   @override
   Spacha? get spacha;
   @override
   File? get iconImage;
+  @override
+  bool get isCorner;
   @override
   @JsonKey(ignore: true)
   _$$_MakingPageStateCopyWith<_$_MakingPageState> get copyWith =>

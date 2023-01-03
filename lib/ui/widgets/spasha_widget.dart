@@ -10,6 +10,7 @@ Widget spachaWidget({
   required String name,
   required int price,
   required String message,
+  required bool isCorner,
   File? iconImage,
 }) {
   Color widgetColor() {
@@ -66,20 +67,22 @@ Widget spachaWidget({
   }
 
   final formatter = NumberFormat('#,###');
-  final _key = GlobalKey();
   return Column(
     children: [
       Container(
         height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(10),
-            topRight: const Radius.circular(10),
-            bottomLeft: Radius.circular(price >= 200 && message != '' ? 0 : 10),
-            bottomRight:
-                Radius.circular(price >= 200 && message != '' ? 0 : 10),
-          ),
+          borderRadius: isCorner
+              ? BorderRadius.only(
+                  topLeft: const Radius.circular(10),
+                  topRight: const Radius.circular(10),
+                  bottomLeft:
+                      Radius.circular(price >= 200 && message != '' ? 0 : 10),
+                  bottomRight:
+                      Radius.circular(price >= 200 && message != '' ? 0 : 10),
+                )
+              : null,
           color: widgetColor(),
         ),
         child: Padding(
@@ -141,10 +144,12 @@ Widget spachaWidget({
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
+              borderRadius: isCorner
+                  ? const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    )
+                  : null,
               color: widgetLightColor(),
             ),
             child: Padding(

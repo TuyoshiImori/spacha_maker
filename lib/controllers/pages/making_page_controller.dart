@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
@@ -17,6 +18,7 @@ class MakingPageState with _$MakingPageState {
   const factory MakingPageState({
     Spacha? spacha,
     File? iconImage,
+    @Default(false) bool isCorner,
   }) = _MakingPageState;
 }
 
@@ -35,7 +37,7 @@ class MakingPageController extends StateNotifier<MakingPageState> {
     state = state.copyWith(
       spacha: const Spacha(
         name: '',
-        price: 100,
+        price: 200,
         message: '',
       ),
     );
@@ -77,15 +79,26 @@ class MakingPageController extends StateNotifier<MakingPageState> {
     state = state.copyWith(spacha: state.spacha?.copyWith(message: message));
   }
 
-  Future<void> exportToImage({required RenderRepaintBoundary boundary}) async {
-    final image = await boundary.toImage(pixelRatio: 5);
-    final byteData = await image.toByteData(
+  void switchCorner() {
+    state = state.copyWith(isCorner: !state.isCorner);
+  }
+
+  Future<Uint8List> exportToImage({
+    required RenderRepaintBoundary boundary,
+    required double pixelRatio,
+    required bool isSave,
+  }) async {
+    final img = await boundary.toImage(pixelRatio: pixelRatio);
+    final byteData = await img.toByteData(
       format: ui.ImageByteFormat.png,
     );
     final pngBytes = byteData!.buffer.asUint8List();
-    await ImageGallerySaver.saveImage(
-      pngBytes,
-      quality: 100,
-    );
+    if (isSave) {
+      await ImageGallerySaver.saveImage(
+        pngBytes,
+        quality: 100,
+      );
+    }
+    return pngBytes;
   }
 }

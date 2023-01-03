@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Spacha Maker</string>
+	<string>スパチャ</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +24,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<key>CFBundleLocalizations</key>
+    <array>
+       	<string>en</string>
+        <string>ja</string>
+    </array>
 
 	<key>NSCameraUsageDescription</key>
     <string>プロフィール写真の設定や写真の投稿に使用します。</string>

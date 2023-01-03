@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:spacha_maker/controllers/pages/making_page_controller.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/ui/dialogs/finish_saver_dialog.dart';
+import 'package:spacha_maker/ui/pages/printing_page/printing_page.dart';
 import 'package:spacha_maker/ui/widgets/spasha_widget.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
@@ -23,7 +25,6 @@ class MakingPage extends StatelessWidget {
         child: AppBar(
           elevation: 0,
           title: const Subtitle1Text('スパチャメーカー'),
-          backgroundColor: spachaYellow,
           actions: [
             GestureDetector(
               onTap: () {
@@ -59,6 +60,9 @@ class MakingPage extends StatelessWidget {
           final iconImage = ref.watch(
             makingPageProvider.select((s) => s.iconImage),
           );
+          final isCorner = ref.watch(
+            makingPageProvider.select((s) => s.isCorner),
+          );
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
@@ -67,19 +71,28 @@ class MakingPage extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
-                    ),
-                    child: RepaintBoundary(
-                      key: globalKey,
-                      child: spachaWidget(
-                        context: context,
-                        name: name,
-                        price: price,
-                        message: message,
-                        iconImage: iconImage,
+                  Container(
+                    color: white,
+                    height: 300,
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 20,
+                          ),
+                          child: RepaintBoundary(
+                            key: globalKey,
+                            child: spachaWidget(
+                              context: context,
+                              name: name,
+                              price: price,
+                              message: message,
+                              iconImage: iconImage,
+                              isCorner: isCorner,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -87,6 +100,7 @@ class MakingPage extends StatelessWidget {
                   _buildNameArea(),
                   _buildPriceArea(),
                   _buildMessageArea(),
+                  _buildCornerArea(),
                   const SizedBox(
                     height: 320,
                   ),
@@ -98,18 +112,63 @@ class MakingPage extends StatelessWidget {
       ),
       floatingActionButton: Consumer(
         builder: (context, ref, _) {
-          return FloatingActionButton(
-            onPressed: () {
-              final boundary = globalKey.currentContext!.findRenderObject()!
-                  as RenderRepaintBoundary;
-              ref
-                  .read(makingPageProvider.notifier)
-                  .exportToImage(boundary: boundary);
-              finishSaverDialog(
-                context: context,
-                backCount: 0,
-              );
-            },
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingActionButton(
+                heroTag: 'printer',
+                onPressed: () async {
+                  await EasyLoading.show(
+                    status: '画像を取り込み中',
+                    maskType: EasyLoadingMaskType.black,
+                  );
+                  final boundary = globalKey.currentContext!.findRenderObject()!
+                      as RenderRepaintBoundary;
+                  final spachaWidget =
+                      await ref.read(makingPageProvider.notifier).exportToImage(
+                            boundary: boundary,
+                            pixelRatio: 5,
+                            isSave: false,
+                          );
+                  final printingArguments = PrintingArguments(
+                    height: globalKey.currentContext!.size!.height,
+                    width: globalKey.currentContext!.size!.width,
+                    spachaWidget: spachaWidget,
+                  );
+                  await EasyLoading.dismiss();
+                  await Navigator.of(context).pushNamed(
+                    RouteGenerator.printingPage,
+                    arguments: printingArguments,
+                  );
+                },
+                child: const Icon(Icons.chevron_right),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              FloatingActionButton(
+                heroTag: 'saver',
+                onPressed: () {
+                  EasyLoading.show(
+                    status: '画像を取り込み中',
+                    maskType: EasyLoadingMaskType.black,
+                  );
+                  final boundary = globalKey.currentContext!.findRenderObject()!
+                      as RenderRepaintBoundary;
+                  ref.read(makingPageProvider.notifier).exportToImage(
+                        boundary: boundary,
+                        pixelRatio: 5,
+                        isSave: true,
+                      );
+                  EasyLoading.dismiss();
+                  finishSaverDialog(
+                    context: context,
+                    backCount: 0,
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
+            ],
           );
         },
       ),
@@ -131,11 +190,12 @@ class MakingPage extends StatelessWidget {
                 child: const Subtitle1Text('アイコン', bottomPadding: 0),
               ),
             ),
-            CircleAvatar(
-              radius: 50,
-              child: Stack(
-                children: [
-                  if (iconImage != null)
+            if (iconImage != null)
+              CircleAvatar(
+                radius: 50,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
                     ClipOval(
                       child: Image.file(
                         iconImage,
@@ -144,6 +204,37 @@ class MakingPage extends StatelessWidget {
                         fit: BoxFit.fill,
                       ),
                     ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          await ref
+                              .read(makingPageProvider.notifier)
+                              .iconEdited();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(30),
+                          child: const Icon(
+                            Icons.camera_enhance_outlined,
+                            size: 40,
+                            color: white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (iconImage == null)
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Center(
+                    child: Icon(
+                      Icons.account_circle_sharp,
+                      color: black,
+                      size: 120,
+                    ),
+                  ),
                   Center(
                     child: GestureDetector(
                       onTap: () async {
@@ -163,7 +254,6 @@ class MakingPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
           ],
         );
       },
@@ -337,6 +427,39 @@ class MakingPage extends StatelessWidget {
               ),
             ),
             const Divider(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCornerArea() {
+    return Consumer(
+      builder: (context, ref, _) {
+        final isCorner = ref.watch(
+          makingPageProvider.select((s) => s.isCorner),
+        );
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 56,
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Subtitle1Text('角の丸み', bottomPadding: 0),
+                  ),
+                ],
+              ),
+            ),
+            Switch.adaptive(
+              value: isCorner,
+              activeColor: white,
+              onChanged: (bool isBasket) {
+                ref.read(makingPageProvider.notifier).switchCorner();
+              },
+            ),
           ],
         );
       },
