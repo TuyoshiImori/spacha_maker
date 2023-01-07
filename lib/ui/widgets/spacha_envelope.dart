@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -10,11 +9,8 @@ import 'package:spacha_maker/ui/widgets/custom_paint/upper_right_diagonal_line.d
 
 Widget spachaEnvelope({
   required BuildContext context,
-  required String name,
   required int price,
-  required String message,
-  required bool isCorner,
-  File? iconImage,
+  //required Uint8List spachaWidget,
 }) {
   Color widgetLightColor() {
     if (200 <= price && price <= 499) {
@@ -33,141 +29,267 @@ Widget spachaEnvelope({
     return spachaBlue;
   }
 
-  final width = MediaQuery.of(context).size.width - 16;
-  final height = width / sqrt(2); //基準
+  final height = MediaQuery.of(context).size.width - 16;
+  final width = height / sqrt(2); //基準
 
   return Padding(
     padding: const EdgeInsets.all(8),
-    child: AspectRatio(
-      aspectRatio: sqrt(2) / 1, // 横/縦
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: widgetLightColor(),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  height: height * (sqrt(2) / 4),
-                  width: (width / 4) - 0.5,
-                  child: CustomPaint(
-                    painter: UpperLeftDiagonalLine(),
-                  ),
-                ),
-                Container(
-                  height: height * (sqrt(2) / 4),
-                  width: (width / 4) - 0.5,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(width: 0.7),
-                      right: BorderSide(width: 0.7),
-                    ),
-                  ),
-                  child: CustomPaint(
-                    painter: UpperRightDiagonalLine(),
-                  ),
-                ),
-                Container(
-                  height: height * (sqrt(2) / 4),
-                  width: (width / 4) - 0.5,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      right: BorderSide(width: 0.7),
-                    ),
-                  ),
-                  child: CustomPaint(
-                    painter: UpperLeftDiagonalLine(),
-                  ),
-                ),
-                SizedBox(
-                  height: height * (sqrt(2) / 4),
-                  width: (width / 4) - 0.5,
-                  child: CustomPaint(
-                    painter: UpperRightDiagonalLine(),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  height: height / 6 * (4 - sqrt(2)) - 2,
-                  width: width / 4,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 0.7),
-                      top: BorderSide(width: 0.7),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: height / 6 * (4 - sqrt(2)) - 2,
-                  width: (width / 2) - 2,
-                  color: black,
-
-                  ///TODO スパチャの画像を入れる
-                ),
-                Container(
-                  height: height / 6 * (4 - sqrt(2)) - 2,
-                  width: width / 4,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 0.7),
-                      top: BorderSide(width: 0.7),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  height: height / 12 * (4 - sqrt(2)),
-                  width: (width / 4) - 0.5,
-                  child: CustomPaint(
-                    painter: BottomUpperLeftDiagonal(),
-                  ),
-                ),
-                Container(
-                  height: height / 12 * (4 - sqrt(2)),
-                  width: (width / 4) - 0.5,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(width: 0.7),
-                      right: BorderSide(width: 0.7),
-                    ),
-                  ),
-                  child: CustomPaint(
-                    painter: BottomUpperRightDiagonal(),
-                  ),
-                ),
-                Container(
-                  height: height / 12 * (4 - sqrt(2)),
-                  width: (width / 4) - 0.5,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      right: BorderSide(width: 0.7),
-                    ),
-                  ),
-                  child: CustomPaint(
-                    painter: BottomUpperLeftDiagonal(),
-                  ),
-                ),
-                SizedBox(
-                  height: height / 12 * (4 - sqrt(2)),
-                  width: (width / 4) - 0.5,
-                  child: CustomPaint(
-                    painter: BottomUpperRightDiagonal(),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+    child: Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: widgetLightColor(),
       ),
+      child: Row(
+        children: [
+          Column(
+            children: [
+              SizedBox(
+                width: width / 12 * (4 - sqrt(2)),
+                height: (height / 4) - 0.5,
+                child: CustomPaint(
+                  painter: BottomUpperLeftDiagonal(),
+                ),
+              ),
+              Container(
+                width: width / 12 * (4 - sqrt(2)),
+                height: (height / 4) - 0.5,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(width: 0.7),
+                    bottom: BorderSide(width: 0.7),
+                  ),
+                ),
+                child: CustomPaint(
+                  painter: BottomUpperRightDiagonal(),
+                ),
+              ),
+              Container(
+                width: width / 12 * (4 - sqrt(2)),
+                height: (height / 4) - 0.5,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 0.7),
+                  ),
+                ),
+                child: CustomPaint(
+                  painter: BottomUpperLeftDiagonal(),
+                ),
+              ),
+              SizedBox(
+                width: width / 12 * (4 - sqrt(2)),
+                height: (height / 4) - 0.5,
+                child: CustomPaint(
+                  painter: BottomUpperRightDiagonal(),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              Container(
+                width: width / 6 * (4 - sqrt(2)) - 2,
+                height: height / 4,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    left: BorderSide(width: 0.7),
+                    right: BorderSide(width: 0.7),
+                  ),
+                ),
+              ),
+              Container(
+                width: width / 6 * (4 - sqrt(2)) - 2,
+                height: (height / 2) - 2,
+                //child: spachaWidget,
+                // decoration: BoxDecoration(
+                //   image: DecorationImage(
+                //     image: MemoryImage(spachaWidget),
+                //     fit: BoxFit.fill,
+                //   ),
+                // ),
+              ),
+              Container(
+                width: width / 6 * (4 - sqrt(2)) - 2,
+                height: height / 4,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    left: BorderSide(width: 0.7),
+                    right: BorderSide(width: 0.7),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(
+                width: width * (sqrt(2) / 4),
+                height: (height / 4) - 0.5,
+                child: CustomPaint(
+                  painter: UpperLeftDiagonalLine(),
+                ),
+              ),
+              Container(
+                width: width * (sqrt(2) / 4),
+                height: (height / 4) - 0.5,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(width: 0.7),
+                    bottom: BorderSide(width: 0.7),
+                  ),
+                ),
+                child: CustomPaint(
+                  painter: UpperRightDiagonalLine(),
+                ),
+              ),
+              Container(
+                width: width * (sqrt(2) / 4),
+                height: (height / 4) - 0.5,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 0.7),
+                  ),
+                ),
+                child: CustomPaint(
+                  painter: UpperLeftDiagonalLine(),
+                ),
+              ),
+              SizedBox(
+                width: width * (sqrt(2) / 4),
+                height: (height / 4) - 0.5,
+                child: CustomPaint(
+                  painter: UpperRightDiagonalLine(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      // child: Column(
+      //   children: [
+      //     Row(
+      //       children: [
+      //         SizedBox(
+      //           height: height * (sqrt(2) / 4),
+      //           width: (width / 4) - 0.5,
+      //           child: CustomPaint(
+      //             painter: UpperLeftDiagonalLine(),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height * (sqrt(2) / 4),
+      //           width: (width / 4) - 0.5,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               left: BorderSide(width: 0.7),
+      //               right: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //           child: CustomPaint(
+      //             painter: UpperRightDiagonalLine(),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height * (sqrt(2) / 4),
+      //           width: (width / 4) - 0.5,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               right: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //           child: CustomPaint(
+      //             painter: UpperLeftDiagonalLine(),
+      //           ),
+      //         ),
+      //         SizedBox(
+      //           height: height * (sqrt(2) / 4),
+      //           width: (width / 4) - 0.5,
+      //           child: CustomPaint(
+      //             painter: UpperRightDiagonalLine(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //     Row(
+      //       children: [
+      //         Container(
+      //           height: height / 6 * (4 - sqrt(2)) - 2,
+      //           width: width / 4,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               bottom: BorderSide(width: 0.7),
+      //               top: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height / 6 * (4 - sqrt(2)) - 2,
+      //           width: (width / 2) - 2,
+      //           //child: spachaWidget,
+      //           decoration: BoxDecoration(
+      //             image: DecorationImage(
+      //               image: MemoryImage(spachaWidget),
+      //               fit: BoxFit.fill,
+      //             ),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height / 6 * (4 - sqrt(2)) - 2,
+      //           width: width / 4,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               bottom: BorderSide(width: 0.7),
+      //               top: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //     Row(
+      //       children: [
+      //         SizedBox(
+      //           height: height / 12 * (4 - sqrt(2)),
+      //           width: (width / 4) - 0.5,
+      //           child: CustomPaint(
+      //             painter: BottomUpperLeftDiagonal(),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height / 12 * (4 - sqrt(2)),
+      //           width: (width / 4) - 0.5,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               left: BorderSide(width: 0.7),
+      //               right: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //           child: CustomPaint(
+      //             painter: BottomUpperRightDiagonal(),
+      //           ),
+      //         ),
+      //         Container(
+      //           height: height / 12 * (4 - sqrt(2)),
+      //           width: (width / 4) - 0.5,
+      //           decoration: const BoxDecoration(
+      //             border: Border(
+      //               right: BorderSide(width: 0.7),
+      //             ),
+      //           ),
+      //           child: CustomPaint(
+      //             painter: BottomUpperLeftDiagonal(),
+      //           ),
+      //         ),
+      //         SizedBox(
+      //           height: height / 12 * (4 - sqrt(2)),
+      //           width: (width / 4) - 0.5,
+      //           child: CustomPaint(
+      //             painter: BottomUpperRightDiagonal(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      // ),
     ),
   );
 }

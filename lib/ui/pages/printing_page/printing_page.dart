@@ -5,17 +5,21 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:spacha_maker/controllers/pages/printing_page_controller.dart';
+import 'package:spacha_maker/models/models.dart';
+import 'package:spacha_maker/ui/widgets/spacha_envelope.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
 class PrintingArguments {
   PrintingArguments({
     required this.height,
     required this.width,
+    required this.spacha,
     required this.spachaWidget,
   });
 
   final double height;
   final double width;
+  final Spacha spacha;
   final Uint8List spachaWidget;
 }
 
@@ -26,6 +30,7 @@ class PrintingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spachaEnvelopeKey = GlobalKey();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44),
@@ -36,22 +41,33 @@ class PrintingPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, ref, _) {
-          return PdfPreview(
-            allowPrinting: false,
-            allowSharing: false,
-            canChangePageFormat: false,
-            canDebug: false,
-            build: (format) {
-              return generatePdf(ref);
-            },
+          return Stack(
+            children: [
+              PdfPreview(
+                allowPrinting: false,
+                allowSharing: false,
+                canChangePageFormat: false,
+                canDebug: false,
+                build: (format) {
+                  return generatePdf(ref);
+                },
+              ),
+              RepaintBoundary(
+                key: spachaEnvelopeKey,
+                child: spachaEnvelope(
+                  context: context,
+                  price: printingArguments.spacha.price,
+                  //spachaWidget: spachaWidget,
+                ),
+              ),
+            ],
           );
         },
       ),
       floatingActionButton: Consumer(
         builder: (context, ref, _) {
-          final uint8List = ref.watch(
-            printingPageProvider.select((s) => s.uint8list),
-          );
+          final uint8List =
+              ref.watch(printingPageProvider.select((s) => s.uint8list));
           return FloatingActionButton(
             onPressed: () async {
               if (uint8List != null) {
@@ -73,13 +89,16 @@ class PrintingPage extends StatelessWidget {
         pw.Page(
           pageFormat: PdfPageFormat.a4,
           build: (context) {
-            return pw.Container(
-              height: printingArguments.height * 0.5,
-              width: printingArguments.width * 0.5,
-              decoration: pw.BoxDecoration(
-                image: pw.DecorationImage(
-                  image: pw.MemoryImage(printingArguments.spachaWidget),
-                  fit: pw.BoxFit.fill,
+            return pw.FullPage(
+              ignoreMargins: true,
+              child: pw.Container(
+                // height: printingArguments.height * 0.5,
+                // width: printingArguments.width * 0.5,
+                decoration: pw.BoxDecoration(
+                  image: pw.DecorationImage(
+                    image: pw.MemoryImage(printingArguments.spachaWidget),
+                    //fit: pw.BoxFit.fill,
+                  ),
                 ),
               ),
             );

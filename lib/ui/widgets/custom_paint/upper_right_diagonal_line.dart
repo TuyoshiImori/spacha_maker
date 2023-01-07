@@ -13,8 +13,8 @@ class UpperRightDiagonalLine extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.5;
     path = Path()
-      ..moveTo(0, size.height)
-      ..lineTo(size.width, 0)
+      ..moveTo(0, 0)
+      ..lineTo(size.width, size.height)
       ..close();
     canvas.drawPath(path, paint);
   }

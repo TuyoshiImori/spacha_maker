@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       theme: theme(context),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
-      home: const MakingPage(),
+      home: MakingPage(),
       builder: EasyLoading.init(),
     );
   }

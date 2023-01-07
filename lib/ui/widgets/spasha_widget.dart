@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +47,7 @@ Widget spachaWidget({
     } else if (10000 <= price) {
       return spachaLightRed;
     }
-    return spachaLightCyan;
+    return spachaBlue;
   }
 
   Color nameTextColor() {
@@ -67,27 +68,29 @@ Widget spachaWidget({
   }
 
   final formatter = NumberFormat('#,###');
+  final width = MediaQuery.of(context).size.width - 32;
+  final height = width * (2 * sqrt(2) - 1) / 3;
   return Column(
     children: [
       Container(
-        height: 60,
-        width: double.infinity,
+        height: 70,
+        //width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: isCorner
-              ? BorderRadius.only(
-                  topLeft: const Radius.circular(10),
-                  topRight: const Radius.circular(10),
-                  bottomLeft:
-                      Radius.circular(price >= 200 && message != '' ? 0 : 10),
-                  bottomRight:
-                      Radius.circular(price >= 200 && message != '' ? 0 : 10),
+              ? const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 )
               : null,
           color: widgetColor(),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            //vertical: 8,
+          ),
           child: Row(
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               iconImage != null
                   ? CircleAvatar(
@@ -100,24 +103,33 @@ Widget spachaWidget({
                         ),
                       ),
                     )
-                  : Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        const Icon(
-                          Icons.account_circle_sharp,
-                          color: black,
-                          size: 50,
-                        ),
-                      ],
+                  : const CircleAvatar(
+                      radius: 24,
+                      child: Headline6Text(
+                        'S',
+                        textAlign: TextAlign.end,
+                        bottomPadding: 0,
+                      ),
                     ),
+              // : Stack(
+              //     alignment: Alignment.center,
+              //     children: [
+              //       Container(
+              //         height: 40,
+              //         width: 40,
+              //         decoration: BoxDecoration(
+              //           color: white,
+              //           borderRadius: BorderRadius.circular(20),
+              //         ),
+              //       ),
+              //       const Icon(
+              //         //Icons.account_circle_sharp,
+              //         Icons.person,
+              //         color: black,
+              //         size: 50,
+              //       ),
+              //     ],
+              //   ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
@@ -138,36 +150,40 @@ Widget spachaWidget({
           ),
         ),
       ),
-      if (price >= 200 && message != '')
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 40,
+      //if (price >= 200 && message != '')
+
+      Container(
+        height: height - 70,
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: isCorner
+              ? const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                )
+              : null,
+          color: widgetLightColor(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
           ),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: isCorner
-                  ? const BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    )
-                  : null,
-              color: widgetLightColor(),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: BodyText1Text(
+                  message,
+                  //maxLines: 5,
+                  color: messageTextColor(),
+                  overflow: TextOverflow.fade,
+                ),
               ),
-              child: BodyText1Text(
-                message,
-                //maxLines: 5,
-                color: messageTextColor(),
-                overflow: TextOverflow.fade,
-              ),
-            ),
+            ],
           ),
         ),
+      ),
     ],
   );
 }

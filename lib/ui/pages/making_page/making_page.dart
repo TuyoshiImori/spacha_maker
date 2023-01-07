@@ -1,21 +1,25 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:spacha_maker/controllers/pages/making_page_controller.dart';
+import 'package:spacha_maker/models/models.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/ui/dialogs/finish_saver_dialog.dart';
 import 'package:spacha_maker/ui/pages/printing_page/printing_page.dart';
-import 'package:spacha_maker/ui/widgets/spacha_envelope.dart';
+import 'package:spacha_maker/ui/widgets/keyboard_action_bar.dart';
 import 'package:spacha_maker/ui/widgets/spasha_widget.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
 class MakingPage extends StatelessWidget {
-  const MakingPage({super.key});
+  MakingPage({super.key});
+
+  final FocusNode nodeNameText = FocusNode();
+  final FocusNode nodePriceText = FocusNode();
+  final FocusNode nodeMessageText = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +52,9 @@ class MakingPage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, ref, _) {
-          final name = ref.watch(
-                makingPageProvider.select((s) => s.spacha?.name),
-              ) ??
-              ' ';
-          final price = ref.watch(
-                makingPageProvider.select((s) => s.spacha?.price),
-              ) ??
-              0;
-          final message = ref.watch(
-                makingPageProvider.select((s) => s.spacha?.message),
-              ) ??
-              ' ';
+          final spacha = ref.watch(
+            makingPageProvider.select((s) => s.spacha),
+          );
           final iconImage = ref.watch(
             makingPageProvider.select((s) => s.iconImage),
           );
@@ -68,70 +63,68 @@ class MakingPage extends StatelessWidget {
           );
           return Stack(
             children: [
-              Transform.translate(
-                offset: Offset(
-                  0,
-                  -MediaQuery.of(context).size.height,
-                ),
-                child: RepaintBoundary(
-                  key: spachaEnvelopeKey,
-                  child: spachaEnvelope(
-                    context: context,
-                    name: name,
-                    price: price,
-                    message: message,
-                    iconImage: iconImage,
-                    isCorner: isCorner,
-                  ),
-                ),
-              ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  FocusScope.of(context).unfocus();
+                  //FocusScope.of(context).unfocus();
+                  FocusManager.instance.primaryFocus?.unfocus();
                 },
-                child: SingleChildScrollView(
-                  child: ColoredBox(
-                    color: background,
-                    child: Column(
-                      children: [
-                        Container(
-                          color: white,
-                          height: 300,
-                          child: SingleChildScrollView(
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 20,
-                                ),
-                                child: RepaintBoundary(
-                                  key: spachaWidgetKey,
-                                  child: spachaWidget(
-                                    context: context,
-                                    name: name,
-                                    price: price,
-                                    message: message,
-                                    iconImage: iconImage,
-                                    isCorner: isCorner,
+                child: KeyboardActions(
+                  config: keyboardActionsConfig(
+                    context: context,
+                    focusNodeList: [
+                      nodeNameText,
+                      nodePriceText,
+                      nodeMessageText,
+                    ],
+                  ),
+                  child: SingleChildScrollView(
+                    child: ColoredBox(
+                      color: background,
+                      child: Column(
+                        children: [
+                          ColoredBox(
+                            color: white,
+                            child: SingleChildScrollView(
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 20,
+                                  ),
+                                  child: RepaintBoundary(
+                                    key: spachaWidgetKey,
+                                    child: spachaWidget(
+                                      context: context,
+                                      name: spacha?.name ?? '',
+                                      price: spacha?.price ?? 200,
+                                      message: spacha?.message ?? '',
+                                      iconImage: iconImage,
+                                      isCorner: isCorner,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        _buildIconArea(),
-                        _buildNameArea(),
-                        _buildPriceArea(),
-                        _buildMessageArea(),
-                        _buildCornerArea(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SizedBox(
-                          height: 320,
-                        ),
-                      ],
+                          _buildIconArea(),
+                          const Divider(),
+                          _buildNameArea(),
+                          const Divider(),
+                          _buildPriceArea(),
+                          const Divider(),
+                          _buildMessageArea(),
+                          const Divider(),
+                          _buildCornerArea(),
+                          const Divider(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const SizedBox(
+                            height: 320,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -142,49 +135,36 @@ class MakingPage extends StatelessWidget {
       ),
       floatingActionButton: Consumer(
         builder: (context, ref, _) {
+          final spacha = ref.watch(makingPageProvider.select((s) => s.spacha));
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               FloatingActionButton(
                 heroTag: 'printer',
                 onPressed: () async {
-                  final mediaHeight = (MediaQuery.of(context).size.width - 32) *
-                      ((2 * sqrt(2) - 1) / 3);
-                  final widgetHeight =
-                      spachaWidgetKey.currentContext!.size!.height;
-                  print(mediaHeight);
-                  print(widgetHeight);
-                  if (mediaHeight > widgetHeight) {
-                    await EasyLoading.show(
-                      status: '画像を取り込み中',
-                      maskType: EasyLoadingMaskType.black,
-                    );
-                    final boundary = spachaWidgetKey.currentContext!
-                        .findRenderObject()! as RenderRepaintBoundary;
-                    final spachaWidget = await ref
-                        .read(makingPageProvider.notifier)
-                        .exportToImage(
-                          boundary: boundary,
-                          pixelRatio: 5,
-                          isSave: false,
-                        );
-                    final printingArguments = PrintingArguments(
-                      height: spachaWidgetKey.currentContext!.size!.height,
-                      width: spachaWidgetKey.currentContext!.size!.width,
-                      spachaWidget: spachaWidget,
-                    );
-                    await EasyLoading.dismiss();
-                    await Navigator.of(context).pushNamed(
-                      RouteGenerator.printingPage,
-                      arguments: printingArguments,
-                    );
-                  } else {
-                    finishSaverDialog(
-                      message: 'メッセージの文字数を\n減らしてください',
-                      context: context,
-                      backCount: 0,
-                    );
-                  }
+                  await EasyLoading.show(
+                    status: '画像を取り込み中',
+                    maskType: EasyLoadingMaskType.black,
+                  );
+                  final boundary = spachaWidgetKey.currentContext!
+                      .findRenderObject()! as RenderRepaintBoundary;
+                  final spachaWidget =
+                      await ref.read(makingPageProvider.notifier).exportToImage(
+                            boundary: boundary,
+                            pixelRatio: 5,
+                            isSave: false,
+                          );
+                  final printingArguments = PrintingArguments(
+                    height: spachaWidgetKey.currentContext!.size!.height,
+                    width: spachaWidgetKey.currentContext!.size!.width,
+                    spacha: spacha ?? const Spacha(),
+                    spachaWidget: spachaWidget,
+                  );
+                  await EasyLoading.dismiss();
+                  await Navigator.of(context).pushNamed(
+                    RouteGenerator.printingPage,
+                    arguments: printingArguments,
+                  );
                 },
                 child: const Icon(Icons.chevron_right),
               ),
@@ -225,16 +205,10 @@ class MakingPage extends StatelessWidget {
       builder: (context, ref, _) {
         final iconImage =
             ref.watch(makingPageProvider.select((s) => s.iconImage));
-        return Column(
+        return ExpansionTile(
+          onExpansionChanged: (bool changed) {},
+          title: const Subtitle1Text('アイコン', bottomPadding: 0),
           children: [
-            SizedBox(
-              height: 46,
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                margin: const EdgeInsets.only(left: 16, bottom: 6),
-                child: const Subtitle1Text('アイコン', bottomPadding: 0),
-              ),
-            ),
             if (iconImage != null)
               CircleAvatar(
                 radius: 50,
@@ -308,17 +282,18 @@ class MakingPage extends StatelessWidget {
   Widget _buildNameArea() {
     return Consumer(
       builder: (context, ref, _) {
-        return Column(
+        return ExpansionTile(
+          onExpansionChanged: (bool changed) async {
+            if (changed) {
+              Future.delayed(const Duration(milliseconds: 200), () {
+                FocusScope.of(context).requestFocus(nodeNameText);
+              });
+            } else {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          title: const Subtitle1Text('名前', bottomPadding: 0),
           children: [
-            SizedBox(
-              height: 46,
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                margin: const EdgeInsets.only(left: 16, bottom: 6),
-                child: const Subtitle1Text('名前', bottomPadding: 0),
-              ),
-            ),
-            const Divider(),
             SizedBox(
               height: 56,
               child: Padding(
@@ -347,12 +322,11 @@ class MakingPage extends StatelessWidget {
                           .nameEdited(name: name);
                     },
                     //onSubmitted: _onSubmittedText,
-                    //focusNode: _focusNode,
+                    focusNode: nodeNameText,
                   ),
                 ),
               ),
             ),
-            const Divider(),
           ],
         );
       },
@@ -362,17 +336,18 @@ class MakingPage extends StatelessWidget {
   Widget _buildPriceArea() {
     return Consumer(
       builder: (context, ref, _) {
-        return Column(
+        return ExpansionTile(
+          onExpansionChanged: (bool changed) {
+            if (changed) {
+              Future.delayed(const Duration(milliseconds: 200), () {
+                FocusScope.of(context).requestFocus(nodePriceText);
+              });
+            } else {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          title: const Subtitle1Text('金額', bottomPadding: 0),
           children: [
-            SizedBox(
-              height: 46,
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                margin: const EdgeInsets.only(left: 16, bottom: 6),
-                child: const Subtitle1Text('金額', bottomPadding: 0),
-              ),
-            ),
-            const Divider(),
             SizedBox(
               height: 56,
               child: Padding(
@@ -409,12 +384,11 @@ class MakingPage extends StatelessWidget {
                       }
                     },
                     //onSubmitted: _onSubmittedText,
-                    //focusNode: _focusNode,
+                    focusNode: nodePriceText,
                   ),
                 ),
               ),
             ),
-            const Divider(),
           ],
         );
       },
@@ -424,17 +398,18 @@ class MakingPage extends StatelessWidget {
   Widget _buildMessageArea() {
     return Consumer(
       builder: (context, ref, _) {
-        return Column(
+        return ExpansionTile(
+          onExpansionChanged: (bool changed) {
+            if (changed) {
+              Future.delayed(const Duration(milliseconds: 200), () {
+                FocusScope.of(context).requestFocus(nodeMessageText);
+              });
+            } else {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          title: const Subtitle1Text('メッセージ', bottomPadding: 0),
           children: [
-            SizedBox(
-              height: 46,
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                margin: const EdgeInsets.only(left: 16, bottom: 6),
-                child: const Subtitle1Text('メッセージ', bottomPadding: 0),
-              ),
-            ),
-            const Divider(),
             ConstrainedBox(
               constraints: const BoxConstraints(
                 minHeight: 56,
@@ -466,12 +441,11 @@ class MakingPage extends StatelessWidget {
                           .messageEdited(message: message);
                     },
                     //onSubmitted: _onSubmittedText,
-                    //focusNode: _focusNode,
+                    focusNode: nodeMessageText,
                   ),
                 ),
               ),
             ),
-            const Divider(),
           ],
         );
       },
@@ -498,12 +472,15 @@ class MakingPage extends StatelessWidget {
                 ],
               ),
             ),
-            Switch.adaptive(
-              value: isCorner,
-              activeColor: white,
-              onChanged: (bool isBasket) {
-                ref.read(makingPageProvider.notifier).switchCorner();
-              },
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Switch.adaptive(
+                value: isCorner,
+                activeColor: white,
+                onChanged: (bool isBasket) {
+                  ref.read(makingPageProvider.notifier).switchCorner();
+                },
+              ),
             ),
           ],
         );
