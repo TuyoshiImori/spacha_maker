@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pdf/pdf.dart';
@@ -11,14 +12,10 @@ import 'package:spacha_maker/utils/theme_text.dart';
 
 class PrintingArguments {
   PrintingArguments({
-    required this.height,
-    required this.width,
     required this.spacha,
     required this.spachaWidget,
   });
 
-  final double height;
-  final double width;
   final Spacha spacha;
   final Uint8List spachaWidget;
 }
@@ -30,7 +27,8 @@ class PrintingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spachaEnvelopeKey = GlobalKey();
+    final envelopeKey = GlobalKey();
+    final saveEnvelopeKey = GlobalKey();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44),
@@ -43,22 +41,37 @@ class PrintingPage extends StatelessWidget {
         builder: (context, ref, _) {
           return Stack(
             children: [
+              RepaintBoundary(
+                key: envelopeKey,
+                child: spachaEnvelope(
+                  context: context,
+                  price: printingArguments.spacha.price,
+                  spachaWidget: printingArguments.spachaWidget,
+                  isSaving: false,
+                ),
+              ),
+              RepaintBoundary(
+                key: saveEnvelopeKey,
+                child: spachaEnvelope(
+                  context: context,
+                  price: printingArguments.spacha.price,
+                  spachaWidget: printingArguments.spachaWidget,
+                  isSaving: true,
+                ),
+              ),
               PdfPreview(
                 allowPrinting: false,
                 allowSharing: false,
                 canChangePageFormat: false,
                 canDebug: false,
                 build: (format) {
-                  return generatePdf(ref);
+                  return generatePdf(
+                    ref: ref,
+                    context: context,
+                    key: envelopeKey,
+                    saveKey: saveEnvelopeKey,
+                  );
                 },
-              ),
-              RepaintBoundary(
-                key: spachaEnvelopeKey,
-                child: spachaEnvelope(
-                  context: context,
-                  price: printingArguments.spacha.price,
-                  //spachaWidget: spachaWidget,
-                ),
               ),
             ],
           );
@@ -83,30 +96,50 @@ class PrintingPage extends StatelessWidget {
     );
   }
 
-  Future<Uint8List> generatePdf(WidgetRef ref) async {
-    final pdf = pw.Document()
-      ..addPage(
-        pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (context) {
-            return pw.FullPage(
-              ignoreMargins: true,
-              child: pw.Container(
-                // height: printingArguments.height * 0.5,
-                // width: printingArguments.width * 0.5,
-                decoration: pw.BoxDecoration(
-                  image: pw.DecorationImage(
-                    image: pw.MemoryImage(printingArguments.spachaWidget),
-                    //fit: pw.BoxFit.fill,
-                  ),
-                ),
-              ),
+  Future<Uint8List> generatePdf({
+    required WidgetRef ref,
+    required BuildContext context,
+    required GlobalKey key,
+    required GlobalKey saveKey,
+  }) async {
+    final boundary =
+        key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+    final saveBoundary =
+        saveKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+    final spacha = await ref.read(printingPageProvider.notifier).exportToImage(
+          boundary: boundary,
+          pixelRatio: 5,
+        );
+
+    final saveSpacha =
+        await ref.read(printingPageProvider.notifier).exportToImage(
+              boundary: saveBoundary,
+              pixelRatio: 5,
             );
-          },
-        ),
-      );
+    final pdf = pw.Document()
+      ..addPage(page(uint8list: spacha))
+      ..addPage(page(uint8list: saveSpacha));
     final uint8List = await pdf.save();
     ref.read(printingPageProvider.notifier).setUint8List(uint8List);
     return pdf.save();
+  }
+
+  pw.Page page({required Uint8List uint8list}) {
+    return pw.Page(
+      pageFormat: PdfPageFormat.a4,
+      build: (context) {
+        return pw.FullPage(
+          ignoreMargins: true,
+          child: pw.Container(
+            decoration: pw.BoxDecoration(
+              image: pw.DecorationImage(
+                image: pw.MemoryImage(uint8list),
+                fit: pw.BoxFit.fill,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

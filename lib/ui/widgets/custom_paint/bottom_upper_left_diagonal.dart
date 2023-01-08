@@ -14,10 +14,7 @@ class BottomUpperLeftDiagonal extends CustomPainter {
       ..strokeWidth = 0.5;
     path = Path()
       ..moveTo(size.width, size.height)
-      ..lineTo(
-        0,
-        size.height - size.width,
-      )
+      ..lineTo(0, size.height - size.width)
       ..close();
     canvas.drawPath(path, paint);
   }

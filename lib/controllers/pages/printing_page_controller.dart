@@ -14,6 +14,7 @@ part 'printing_page_controller.freezed.dart';
 class PrintingPageState with _$PrintingPageState {
   const factory PrintingPageState({
     Uint8List? uint8list,
+    @Default(false) bool isSaving,
   }) = _PrintingPageState;
 }
 

@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PrintingPageState {
   Uint8List? get uint8list => throw _privateConstructorUsedError;
+  bool get isSaving => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PrintingPageStateCopyWith<PrintingPageState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $PrintingPageStateCopyWith<$Res> {
           PrintingPageState value, $Res Function(PrintingPageState) then) =
       _$PrintingPageStateCopyWithImpl<$Res, PrintingPageState>;
   @useResult
-  $Res call({Uint8List? uint8list});
+  $Res call({Uint8List? uint8list, bool isSaving});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$PrintingPageStateCopyWithImpl<$Res, $Val extends PrintingPageState>
   @override
   $Res call({
     Object? uint8list = freezed,
+    Object? isSaving = null,
   }) {
     return _then(_value.copyWith(
       uint8list: freezed == uint8list
           ? _value.uint8list
           : uint8list // ignore: cast_nullable_to_non_nullable
               as Uint8List?,
+      isSaving: null == isSaving
+          ? _value.isSaving
+          : isSaving // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$_PrintingPageStateCopyWith<$Res>
       __$$_PrintingPageStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Uint8List? uint8list});
+  $Res call({Uint8List? uint8list, bool isSaving});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$_PrintingPageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uint8list = freezed,
+    Object? isSaving = null,
   }) {
     return _then(_$_PrintingPageState(
       uint8list: freezed == uint8list
           ? _value.uint8list
           : uint8list // ignore: cast_nullable_to_non_nullable
               as Uint8List?,
+      isSaving: null == isSaving
+          ? _value.isSaving
+          : isSaving // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -92,14 +103,17 @@ class __$$_PrintingPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PrintingPageState implements _PrintingPageState {
-  const _$_PrintingPageState({this.uint8list});
+  const _$_PrintingPageState({this.uint8list, this.isSaving = false});
 
   @override
   final Uint8List? uint8list;
+  @override
+  @JsonKey()
+  final bool isSaving;
 
   @override
   String toString() {
-    return 'PrintingPageState(uint8list: $uint8list)';
+    return 'PrintingPageState(uint8list: $uint8list, isSaving: $isSaving)';
   }
 
   @override
@@ -107,12 +121,14 @@ class _$_PrintingPageState implements _PrintingPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PrintingPageState &&
-            const DeepCollectionEquality().equals(other.uint8list, uint8list));
+            const DeepCollectionEquality().equals(other.uint8list, uint8list) &&
+            (identical(other.isSaving, isSaving) ||
+                other.isSaving == isSaving));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(uint8list));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(uint8list), isSaving);
 
   @JsonKey(ignore: true)
   @override
@@ -123,11 +139,13 @@ class _$_PrintingPageState implements _PrintingPageState {
 }
 
 abstract class _PrintingPageState implements PrintingPageState {
-  const factory _PrintingPageState({final Uint8List? uint8list}) =
-      _$_PrintingPageState;
+  const factory _PrintingPageState(
+      {final Uint8List? uint8list, final bool isSaving}) = _$_PrintingPageState;
 
   @override
   Uint8List? get uint8list;
+  @override
+  bool get isSaving;
   @override
   @JsonKey(ignore: true)
   _$$_PrintingPageStateCopyWith<_$_PrintingPageState> get copyWith =>

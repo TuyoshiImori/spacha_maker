@@ -17,14 +17,17 @@ import 'package:spacha_maker/utils/theme_text.dart';
 class MakingPage extends StatelessWidget {
   MakingPage({super.key});
 
-  final FocusNode nodeNameText = FocusNode();
-  final FocusNode nodePriceText = FocusNode();
-  final FocusNode nodeMessageText = FocusNode();
+  final nodeNameText = FocusNode();
+  final nodePriceText = FocusNode();
+  final nodeMessageText = FocusNode();
+  final spachaWidgetKey = GlobalKey();
+  final nameFormKey = GlobalKey();
+  final priceFormKey = GlobalKey();
+  final messageFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final spachaWidgetKey = GlobalKey();
-    final spachaEnvelopeKey = GlobalKey();
+    final bottomSpace = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -85,23 +88,21 @@ class MakingPage extends StatelessWidget {
                         children: [
                           ColoredBox(
                             color: white,
-                            child: SingleChildScrollView(
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 20,
-                                  ),
-                                  child: RepaintBoundary(
-                                    key: spachaWidgetKey,
-                                    child: spachaWidget(
-                                      context: context,
-                                      name: spacha?.name ?? '',
-                                      price: spacha?.price ?? 200,
-                                      message: spacha?.message ?? '',
-                                      iconImage: iconImage,
-                                      isCorner: isCorner,
-                                    ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 20,
+                                ),
+                                child: RepaintBoundary(
+                                  key: spachaWidgetKey,
+                                  child: spachaWidget(
+                                    context: context,
+                                    name: spacha?.name ?? '',
+                                    price: spacha?.price ?? 200,
+                                    message: spacha?.message ?? '',
+                                    iconImage: iconImage,
+                                    isCorner: isCorner,
                                   ),
                                 ),
                               ),
@@ -109,19 +110,34 @@ class MakingPage extends StatelessWidget {
                           ),
                           _buildIconArea(),
                           const Divider(),
-                          _buildNameArea(),
+                          _buildNameArea(
+                            name: spacha?.name ?? '',
+                            controller: TextEditingController(
+                              text: spacha?.name ?? '',
+                            ),
+                            formKey: nameFormKey,
+                          ),
                           const Divider(),
-                          _buildPriceArea(),
+                          _buildPriceArea(
+                            price: spacha?.price ?? 0,
+                            controller: TextEditingController(
+                              text: spacha?.price.toString(),
+                            ),
+                            formKey: priceFormKey,
+                          ),
                           const Divider(),
-                          _buildMessageArea(),
+                          _buildMessageArea(
+                            message: spacha?.message ?? '',
+                            controller: TextEditingController(
+                              text: spacha?.message ?? '',
+                            ),
+                            formKey: messageFormKey,
+                          ),
                           const Divider(),
                           _buildCornerArea(),
                           const Divider(),
                           const SizedBox(
-                            height: 20,
-                          ),
-                          const SizedBox(
-                            height: 320,
+                            height: 260,
                           ),
                         ],
                       ),
@@ -155,8 +171,6 @@ class MakingPage extends StatelessWidget {
                             isSave: false,
                           );
                   final printingArguments = PrintingArguments(
-                    height: spachaWidgetKey.currentContext!.size!.height,
-                    width: spachaWidgetKey.currentContext!.size!.width,
                     spacha: spacha ?? const Spacha(),
                     spachaWidget: spachaWidget,
                   );
@@ -273,19 +287,27 @@ class MakingPage extends StatelessWidget {
                   ),
                 ],
               ),
+            const SizedBox(
+              height: 16,
+            ),
           ],
         );
       },
     );
   }
 
-  Widget _buildNameArea() {
+  Widget _buildNameArea({
+    required String name,
+    required TextEditingController controller,
+    required GlobalKey formKey,
+  }) {
     return Consumer(
       builder: (context, ref, _) {
         return ExpansionTile(
           onExpansionChanged: (bool changed) async {
             if (changed) {
               Future.delayed(const Duration(milliseconds: 200), () {
+                Scrollable.ensureVisible(formKey.currentContext!);
                 FocusScope.of(context).requestFocus(nodeNameText);
               });
             } else {
@@ -303,6 +325,8 @@ class MakingPage extends StatelessWidget {
                 ),
                 child: Center(
                   child: NativeTextInput(
+                    key: formKey,
+                    controller: controller,
                     style: const TextStyle(
                       fontSize: 16,
                       color: black,
@@ -333,13 +357,18 @@ class MakingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceArea() {
+  Widget _buildPriceArea({
+    required int price,
+    required TextEditingController controller,
+    required GlobalKey formKey,
+  }) {
     return Consumer(
       builder: (context, ref, _) {
         return ExpansionTile(
           onExpansionChanged: (bool changed) {
             if (changed) {
               Future.delayed(const Duration(milliseconds: 200), () {
+                Scrollable.ensureVisible(formKey.currentContext!);
                 FocusScope.of(context).requestFocus(nodePriceText);
               });
             } else {
@@ -357,6 +386,8 @@ class MakingPage extends StatelessWidget {
                 ),
                 child: Center(
                   child: NativeTextInput(
+                    key: formKey,
+                    controller: controller,
                     style: const TextStyle(
                       fontSize: 16,
                       color: black,
@@ -395,13 +426,20 @@ class MakingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageArea() {
+  Widget _buildMessageArea({
+    required String message,
+    required TextEditingController controller,
+    required GlobalKey formKey,
+  }) {
     return Consumer(
       builder: (context, ref, _) {
         return ExpansionTile(
           onExpansionChanged: (bool changed) {
             if (changed) {
               Future.delayed(const Duration(milliseconds: 200), () {
+                Scrollable.ensureVisible(
+                  formKey.currentContext!,
+                );
                 FocusScope.of(context).requestFocus(nodeMessageText);
               });
             } else {
@@ -421,6 +459,8 @@ class MakingPage extends StatelessWidget {
                 ),
                 child: Center(
                   child: NativeTextInput(
+                    key: formKey,
+                    controller: controller,
                     style: const TextStyle(
                       fontSize: 16,
                       color: black,
