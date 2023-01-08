@@ -74,7 +74,6 @@ Widget spachaWidget({
     children: [
       Container(
         height: 70,
-        //width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: isCorner
               ? const BorderRadius.only(
@@ -87,10 +86,8 @@ Widget spachaWidget({
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
-            //vertical: 8,
           ),
           child: Row(
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               iconImage != null
                   ? CircleAvatar(
@@ -111,39 +108,27 @@ Widget spachaWidget({
                         bottomPadding: 0,
                       ),
                     ),
-              // : Stack(
-              //     alignment: Alignment.center,
-              //     children: [
-              //       Container(
-              //         height: 40,
-              //         width: 40,
-              //         decoration: BoxDecoration(
-              //           color: white,
-              //           borderRadius: BorderRadius.circular(20),
-              //         ),
-              //       ),
-              //       const Icon(
-              //         //Icons.account_circle_sharp,
-              //         Icons.person,
-              //         color: black,
-              //         size: 50,
-              //       ),
-              //     ],
-              //   ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Subtitle1Text(
-                      name != '' ? name : '名前',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      color: nameTextColor(),
-                    ),
-                    Subtitle1Text('¥ ${formatter.format(price)}'),
-                  ],
+              SizedBox(
+                width: width - 112,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Subtitle1Text(
+                        name != '' ? name : '名前',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        color: nameTextColor(),
+                      ),
+                      Subtitle1Text(
+                        '¥ ${formatter.format(price)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

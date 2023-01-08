@@ -9,6 +9,7 @@ const Color textDisable = Color(0xffABABAB);
 const Color divider = Color(0xffE7E7E7);
 const Color background = Color(0xffF6F5FA);
 
+const Color accent1 = Color(0xff5F6EF4);
 const Color error = Color(0xFFB00020);
 const Color selectable = Color(0xFF007AFF);
 const Color unSelectable = Color(0xffB3B8BF);

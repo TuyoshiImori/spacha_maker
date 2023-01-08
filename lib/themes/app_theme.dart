@@ -29,7 +29,7 @@ ThemeData theme(BuildContext context) => ThemeData(
           // unselectedItemColor: black,
           ),
 
-      fontFamily: 'NotoSansJP',
+      //fontFamily: 'NotoSansJP',
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: white,
         // backgroundColor: tsukuttaOrange,
