@@ -225,6 +225,7 @@ class MakingPage extends StatelessWidget {
         final isCorner = ref.watch(
           makingPageProvider.select((s) => s.isCorner),
         );
+        final spacha = ref.watch(makingPageProvider.select((s) => s.spacha));
         return Column(
           children: [
             _buildTransitionListItem(
@@ -253,6 +254,7 @@ class MakingPage extends StatelessWidget {
                 focusNode: nodeNameText,
                 placeholder: '名前',
                 formKey: nameFormKey,
+                controller: TextEditingController(text: spacha?.name ?? ''),
               ),
             ),
             const Divider(),
@@ -278,6 +280,9 @@ class MakingPage extends StatelessWidget {
                 focusNode: nodePriceText,
                 placeholder: '金額',
                 formKey: priceFormKey,
+                controller: TextEditingController(
+                  text: spacha?.price.toString(),
+                ),
               ),
             ),
             const Divider(),
@@ -297,6 +302,7 @@ class MakingPage extends StatelessWidget {
                 focusNode: nodeMessageText,
                 placeholder: 'メッセージ',
                 formKey: messageFormKey,
+                controller: TextEditingController(text: spacha?.message ?? ''),
               ),
             ),
             const Divider(),
@@ -323,12 +329,14 @@ class MakingPage extends StatelessWidget {
     required String placeholder,
     required void Function() onTap,
     required GlobalKey formKey,
+    required TextEditingController controller,
   }) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * (3 / 5),
       height: 56,
       child: Center(
         child: NativeTextInput(
+          controller: controller,
           key: formKey,
           style: const TextStyle(
             fontSize: 16,

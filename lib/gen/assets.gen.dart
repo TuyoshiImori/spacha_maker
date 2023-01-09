@@ -25,16 +25,25 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/app_icon.png
+  /// File path: assets/images/app_icon.jpg
   AssetGenImage get appIcon =>
-      const AssetGenImage('assets/images/app_icon.png');
+      const AssetGenImage('assets/images/app_icon.jpg');
+
+  /// File path: assets/images/introduction_envelope.jpg
+  AssetGenImage get introductionEnvelope =>
+      const AssetGenImage('assets/images/introduction_envelope.jpg');
+
+  /// File path: assets/images/introduction_spacha.jpg
+  AssetGenImage get introductionSpacha =>
+      const AssetGenImage('assets/images/introduction_spacha.jpg');
 
   /// File path: assets/images/pdf_file.png
   AssetGenImage get pdfFile =>
       const AssetGenImage('assets/images/pdf_file.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [appIcon, pdfFile];
+  List<AssetGenImage> get values =>
+      [appIcon, introductionEnvelope, introductionSpacha, pdfFile];
 }
 
 class Assets {

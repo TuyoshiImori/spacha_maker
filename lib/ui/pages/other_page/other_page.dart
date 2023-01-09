@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
+import 'package:spacha_maker/utils/url_launcher.dart';
 
 class OtherPage extends StatelessWidget {
   const OtherPage({super.key});
@@ -66,16 +68,24 @@ class OtherPage extends StatelessWidget {
         return Column(
           children: [
             _buildTransitionListItem(
-              caption: 'このアプリの使い方',
+              caption: 'このアプリについて',
               onTap: () async {
-                ///TODO アプリの使い方
+                await Navigator.of(context)
+                    .pushNamed(RouteGenerator.introductionPage);
+              },
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: 'スパチャ封筒の折り方動画を見る',
+              onTap: () async {
+                await openLinkBrowser(url: 'https://youtu.be/tvVl_dtrLAw');
               },
             ),
             const Divider(),
             _buildTransitionListItem(
               caption: 'このアプリをレビューする',
               onTap: () async {
-                await openAppSettings();
+                //await openAppSettings();
               },
             ),
             const Divider(),
