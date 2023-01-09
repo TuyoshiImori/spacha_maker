@@ -22,10 +22,26 @@ class $AssetsFontsGen {
   List<String> get values => [notoSansJPBold, notoSansJPRegular];
 }
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/app_icon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/images/app_icon.png');
+
+  /// File path: assets/images/pdf_file.png
+  AssetGenImage get pdfFile =>
+      const AssetGenImage('assets/images/pdf_file.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [appIcon, pdfFile];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
 class AssetGenImage {

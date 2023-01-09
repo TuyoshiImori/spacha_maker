@@ -34,7 +34,7 @@ class PrintingPage extends StatelessWidget {
         preferredSize: const Size.fromHeight(44),
         child: AppBar(
           elevation: 0,
-          title: const Subtitle1Text('印刷'),
+          title: const Subtitle1Text('PDFプレビュー'),
         ),
       ),
       body: Consumer(

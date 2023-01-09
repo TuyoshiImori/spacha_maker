@@ -32,7 +32,7 @@ ThemeData theme(BuildContext context) => ThemeData(
       //fontFamily: 'NotoSansJP',
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: white,
-        // backgroundColor: tsukuttaOrange,
+        backgroundColor: spachaLightYellow,
       ),
       listTileTheme: const ListTileThemeData(textColor: black),
       dividerTheme: const DividerThemeData(

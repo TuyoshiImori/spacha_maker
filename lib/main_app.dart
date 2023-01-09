@@ -24,7 +24,17 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
       home: MakingPage(),
-      builder: EasyLoading.init(),
+      //builder: EasyLoading.init(),
+      builder: (context, child) {
+        child = EasyLoading.init()(
+          context,
+          child,
+        );
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: child,
+        );
+      },
     );
   }
 }

@@ -102,8 +102,10 @@ Widget spachaWidget({
                     )
                   : const CircleAvatar(
                       radius: 24,
+                      backgroundColor: spachaLightYellow,
                       child: Headline6Text(
                         'S',
+                        color: white,
                         textAlign: TextAlign.end,
                         bottomPadding: 0,
                       ),

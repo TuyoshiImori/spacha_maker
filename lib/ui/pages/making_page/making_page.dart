@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:spacha_maker/controllers/pages/making_page_controller.dart';
+import 'package:spacha_maker/gen/assets.gen.dart';
 import 'package:spacha_maker/models/models.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
@@ -123,9 +124,8 @@ class MakingPage extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              FloatingActionButton(
-                heroTag: 'printer',
-                onPressed: () async {
+              GestureDetector(
+                onTap: () async {
                   await EasyLoading.show(
                     status: '画像を取り込み中',
                     maskType: EasyLoadingMaskType.black,
@@ -148,14 +148,30 @@ class MakingPage extends StatelessWidget {
                     arguments: printingArguments,
                   );
                 },
-                child: const Icon(Icons.chevron_right),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Container(
+                      height: 56,
+                      width: 56,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: spachaLightYellow,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Assets.images.pdfFile.image(),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 16,
               ),
-              FloatingActionButton(
-                heroTag: 'saver',
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   EasyLoading.show(
                     status: '画像を取り込み中',
                     maskType: EasyLoadingMaskType.black,
@@ -173,7 +189,18 @@ class MakingPage extends StatelessWidget {
                     backCount: 0,
                   );
                 },
-                child: const Icon(Icons.add),
+                child: Container(
+                  height: 56,
+                  width: 56,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: spachaLightYellow,
+                  ),
+                  child: const Icon(
+                    Icons.save_alt,
+                    color: white,
+                  ),
+                ),
               ),
             ],
           );
@@ -366,14 +393,14 @@ class MakingPage extends StatelessWidget {
     return PlatformCheck.isAndroid
         ? Switch(
             value: isCorner,
-            activeColor: accent1,
+            activeColor: spachaLightYellow,
             onChanged: (bool value) {
               onChanged(value);
             },
           )
         : Switch.adaptive(
             value: isCorner,
-            activeColor: accent1,
+            activeColor: spachaLightYellow,
             onChanged: (bool value) {
               onChanged(value);
             },

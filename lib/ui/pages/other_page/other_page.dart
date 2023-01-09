@@ -66,14 +66,21 @@ class OtherPage extends StatelessWidget {
         return Column(
           children: [
             _buildTransitionListItem(
-              caption: 'スパチャメーカーをレビューする',
+              caption: 'このアプリの使い方',
+              onTap: () async {
+                ///TODO アプリの使い方
+              },
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: 'このアプリをレビューする',
               onTap: () async {
                 await openAppSettings();
               },
             ),
             const Divider(),
             _buildTransitionListItem(
-              caption: 'スパチャメーカーをシェアする',
+              caption: 'このアプリをシェアする',
               onTap: () async {
                 final box = context.findRenderObject() as RenderBox?;
 
@@ -102,12 +109,7 @@ class OtherPage extends StatelessWidget {
             ),
             const Divider(),
             _buildTransitionListItem(
-              caption: '利用規約',
-              onTap: () async {},
-            ),
-            const Divider(),
-            _buildTransitionListItem(
-              caption: 'プライバシーポリシー',
+              caption: '利用規約・プライバシーポリシー',
               onTap: () async {},
             ),
           ],
