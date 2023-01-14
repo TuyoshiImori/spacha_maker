@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:spacha_maker/controllers/pages/other_page_controller.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
@@ -31,9 +32,9 @@ class OtherPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               children: [
-                _buildHeading('ユーザー設定'),
+                _buildHeading('アプリの設定'),
                 _buildCustomCard(_buildUserSetting()),
-                _buildHeading('スパチャメーカーについて'),
+                _buildHeading('このアプリについて'),
                 _buildCustomCard(_buildAboutApp()),
                 _buildHeading('サポート・その他'),
                 _buildCustomCard(_buildSupport()),
@@ -51,7 +52,7 @@ class OtherPage extends StatelessWidget {
         return Column(
           children: [
             _buildTransitionListItem(
-              caption: '設定を変更する',
+              caption: '設定アプリを開く',
               onTap: () async {
                 await openAppSettings();
               },
@@ -65,10 +66,12 @@ class OtherPage extends StatelessWidget {
   Widget _buildAboutApp() {
     return Consumer(
       builder: (context, ref, _) {
+        final isAvailable =
+            ref.watch(otherPageProvider.select((s) => s.isAvailable));
         return Column(
           children: [
             _buildTransitionListItem(
-              caption: 'このアプリについて',
+              caption: 'アプリの紹介を見る',
               onTap: () async {
                 await Navigator.of(context)
                     .pushNamed(RouteGenerator.introductionPage);
@@ -81,13 +84,16 @@ class OtherPage extends StatelessWidget {
                 await openLinkBrowser(url: 'https://youtu.be/tvVl_dtrLAw');
               },
             ),
-            const Divider(),
-            _buildTransitionListItem(
-              caption: 'このアプリをレビューする',
-              onTap: () async {
-                //await openAppSettings();
-              },
-            ),
+            if (isAvailable) const Divider(),
+            if (isAvailable)
+              _buildTransitionListItem(
+                caption: 'このアプリをレビューする',
+                onTap: () async {
+                  if (isAvailable) {
+                    await ref.read(otherPageProvider.notifier).requestReview();
+                  }
+                },
+              ),
             const Divider(),
             _buildTransitionListItem(
               caption: 'このアプリをシェアする',
@@ -115,12 +121,22 @@ class OtherPage extends StatelessWidget {
           children: [
             _buildTransitionListItem(
               caption: '不具合・お問い合わせ',
-              onTap: () async {},
+              onTap: () async {
+                await urlLauncherMail(
+                  email: 'tos.and.privacy.policy@gmail.com',
+                  title: 'スパチャメーカー　不具合・お問い合わせ',
+                  content: '',
+                );
+              },
             ),
             const Divider(),
             _buildTransitionListItem(
               caption: '利用規約・プライバシーポリシー',
-              onTap: () async {},
+              onTap: () async {
+                await openLinkAppBrowser(
+                  url: 'https://tos-and-privacy-policy.web.app/',
+                );
+              },
             ),
           ],
         );

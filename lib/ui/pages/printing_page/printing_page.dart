@@ -7,6 +7,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:spacha_maker/controllers/pages/printing_page_controller.dart';
 import 'package:spacha_maker/models/models.dart';
+import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/ui/widgets/spacha_envelope.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
@@ -14,10 +15,12 @@ class PrintingArguments {
   PrintingArguments({
     required this.spacha,
     required this.spachaWidget,
+    required this.isSaving,
   });
 
   final Spacha spacha;
   final Uint8List spachaWidget;
+  final bool isSaving;
 }
 
 class PrintingPage extends StatelessWidget {
@@ -28,7 +31,6 @@ class PrintingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final envelopeKey = GlobalKey();
-    final saveEnvelopeKey = GlobalKey();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44),
@@ -47,16 +49,7 @@ class PrintingPage extends StatelessWidget {
                   context: context,
                   price: printingArguments.spacha.price,
                   spachaWidget: printingArguments.spachaWidget,
-                  isSaving: false,
-                ),
-              ),
-              RepaintBoundary(
-                key: saveEnvelopeKey,
-                child: spachaEnvelope(
-                  context: context,
-                  price: printingArguments.spacha.price,
-                  spachaWidget: printingArguments.spachaWidget,
-                  isSaving: true,
+                  isSaving: printingArguments.isSaving,
                 ),
               ),
               PdfPreview(
@@ -69,7 +62,6 @@ class PrintingPage extends StatelessWidget {
                     ref: ref,
                     context: context,
                     key: envelopeKey,
-                    saveKey: saveEnvelopeKey,
                   );
                 },
               ),
@@ -81,15 +73,35 @@ class PrintingPage extends StatelessWidget {
         builder: (context, ref, _) {
           final uint8List =
               ref.watch(printingPageProvider.select((s) => s.uint8list));
-          return FloatingActionButton(
-            onPressed: () async {
+          return GestureDetector(
+            onTap: () async {
               if (uint8List != null) {
                 await Printing.layoutPdf(
                   onLayout: (_) => uint8List,
                 );
               }
             },
-            child: const Icon(Icons.print),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Container(
+                  height: 56,
+                  width: 56,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: spachaLightYellow,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: Icon(
+                    Icons.print,
+                    color: white,
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -100,25 +112,15 @@ class PrintingPage extends StatelessWidget {
     required WidgetRef ref,
     required BuildContext context,
     required GlobalKey key,
-    required GlobalKey saveKey,
   }) async {
     final boundary =
         key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-    final saveBoundary =
-        saveKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
     final spacha = await ref.read(printingPageProvider.notifier).exportToImage(
           boundary: boundary,
           pixelRatio: 5,
         );
 
-    final saveSpacha =
-        await ref.read(printingPageProvider.notifier).exportToImage(
-              boundary: saveBoundary,
-              pixelRatio: 5,
-            );
-    final pdf = pw.Document()
-      ..addPage(page(uint8list: spacha))
-      ..addPage(page(uint8list: saveSpacha));
+    final pdf = pw.Document()..addPage(page(uint8list: spacha));
     final uint8List = await pdf.save();
     ref.read(printingPageProvider.notifier).setUint8List(uint8List);
     return pdf.save();

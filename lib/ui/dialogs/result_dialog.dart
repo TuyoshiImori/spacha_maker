@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 
-void finishSaverDialog({
+void resultDialog({
   required BuildContext context,
-  String message = 'スパチャを保存しました',
+  required String message,
   int backCount = 1,
   int closeTime = 1,
   Object? value,

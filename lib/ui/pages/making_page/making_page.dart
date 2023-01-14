@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,10 +12,11 @@ import 'package:spacha_maker/gen/assets.gen.dart';
 import 'package:spacha_maker/models/models.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
-import 'package:spacha_maker/ui/dialogs/finish_saver_dialog.dart';
+import 'package:spacha_maker/ui/dialogs/result_dialog.dart';
 import 'package:spacha_maker/ui/pages/printing_page/printing_page.dart';
 import 'package:spacha_maker/ui/widgets/keyboard_action_bar.dart';
-import 'package:spacha_maker/ui/widgets/spasha_widget.dart';
+import 'package:spacha_maker/ui/widgets/spacha_widget.dart';
+import 'package:spacha_maker/ui/widgets/spasha_image_widget.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
 
 class MakingPage extends StatelessWidget {
@@ -22,11 +25,15 @@ class MakingPage extends StatelessWidget {
   final nodeNameText = FocusNode();
   final nodePriceText = FocusNode();
   final nodeMessageText = FocusNode();
+
   final spachaWidgetKey = GlobalKey();
+  final spachaImageWidgetKey = GlobalKey();
+
   final nameFormKey = GlobalKey();
   final priceFormKey = GlobalKey();
   final messageFormKey = GlobalKey();
-  final scrollController = ScrollController();
+
+  bool isAblePdf = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +73,13 @@ class MakingPage extends StatelessWidget {
           final isCorner = ref.watch(
             makingPageProvider.select((s) => s.isCorner),
           );
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              //FocusScope.of(context).unfocus();
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            child: KeyboardActions(
-              config: keyboardActionsConfig(
-                context: context,
-                focusNodeList: [
-                  nodeNameText,
-                  nodePriceText,
-                  nodeMessageText,
-                ],
-              ),
-              child: SingleChildScrollView(
-                controller: scrollController,
+          return Stack(
+            children: [
+              Transform.translate(
+                offset: Offset(
+                  0,
+                  -MediaQuery.of(context).size.height,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -91,8 +88,8 @@ class MakingPage extends StatelessWidget {
                   child: Column(
                     children: [
                       RepaintBoundary(
-                        key: spachaWidgetKey,
-                        child: spachaWidget(
+                        key: spachaImageWidgetKey,
+                        child: spachaImageWidget(
                           context: context,
                           name: spacha?.name ?? '',
                           price: spacha?.price ?? 200,
@@ -101,52 +98,129 @@ class MakingPage extends StatelessWidget {
                           isCorner: isCorner,
                         ),
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _buildCustomCard(
-                        _buildEditArea(),
-                      ),
-                      const SizedBox(
-                        height: 260,
-                      ),
                     ],
                   ),
                 ),
               ),
-            ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  //FocusScope.of(context).unfocus();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: KeyboardActions(
+                  config: keyboardActionsConfig(
+                    context: context,
+                    focusNodeList: [
+                      nodeNameText,
+                      nodePriceText,
+                      nodeMessageText,
+                    ],
+                  ),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Column(
+                        children: [
+                          NotificationListener<SizeChangedLayoutNotification>(
+                            onNotification: (notification) {
+                              print('notification: $notification');
+                              final height =
+                                  spachaWidgetKey.currentContext!.size!.height;
+                              final limitHeight =
+                                  (MediaQuery.of(context).size.width - 32) *
+                                      (2 * sqrt(2) - 1) /
+                                      3;
+                              if (height > limitHeight) {
+                                isAblePdf = false;
+                              } else {
+                                isAblePdf = true;
+                              }
+                              return true;
+                            },
+                            child: SizeChangedLayoutNotifier(
+                              child: RepaintBoundary(
+                                key: spachaWidgetKey,
+                                child: spachaWidget(
+                                  context: context,
+                                  name: spacha?.name ?? '',
+                                  price: spacha?.price ?? 200,
+                                  message: spacha?.message ?? '',
+                                  iconImage: iconImage,
+                                  isCorner: isCorner,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          _buildCustomCard(
+                            _buildEditArea(),
+                          ),
+                          const SizedBox(
+                            height: 260,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
       floatingActionButton: Consumer(
         builder: (context, ref, _) {
-          final spacha = ref.watch(makingPageProvider.select((s) => s.spacha));
+          final spacha = ref.watch(
+            makingPageProvider.select((s) => s.spacha),
+          );
+          final isSaving =
+              ref.watch(makingPageProvider.select((s) => s.isSaving));
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
                 onTap: () async {
-                  await EasyLoading.show(
-                    status: '画像を取り込み中',
-                    maskType: EasyLoadingMaskType.black,
-                  );
-                  final boundary = spachaWidgetKey.currentContext!
-                      .findRenderObject()! as RenderRepaintBoundary;
-                  final spachaWidget =
-                      await ref.read(makingPageProvider.notifier).exportToImage(
-                            boundary: boundary,
-                            pixelRatio: 5,
-                            isSave: false,
-                          );
-                  final printingArguments = PrintingArguments(
-                    spacha: spacha ?? const Spacha(),
-                    spachaWidget: spachaWidget,
-                  );
-                  await EasyLoading.dismiss();
-                  await Navigator.of(context).pushNamed(
-                    RouteGenerator.printingPage,
-                    arguments: printingArguments,
-                  );
+                  final height = spachaWidgetKey.currentContext!.size!.height;
+                  final limitHeight =
+                      spachaImageWidgetKey.currentContext!.size!.height;
+
+                  if (limitHeight < height) {
+                    resultDialog(
+                      message: '本文が長いのでPDFに変換できません',
+                      context: context,
+                      backCount: 0,
+                    );
+                  } else {
+                    await EasyLoading.show(
+                      status: '画像を取り込み中',
+                      maskType: EasyLoadingMaskType.black,
+                    );
+                    final boundary = spachaImageWidgetKey.currentContext!
+                        .findRenderObject()! as RenderRepaintBoundary;
+                    final spachaWidget = await ref
+                        .read(makingPageProvider.notifier)
+                        .exportToImage(
+                          boundary: boundary,
+                          pixelRatio: 5,
+                          isSave: false,
+                        );
+                    final printingArguments = PrintingArguments(
+                      spacha: spacha ?? const Spacha(),
+                      spachaWidget: spachaWidget,
+                      isSaving: isSaving,
+                    );
+                    await EasyLoading.dismiss();
+                    await Navigator.of(context).pushNamed(
+                      RouteGenerator.printingPage,
+                      arguments: printingArguments,
+                    );
+                  }
                 },
                 child: Stack(
                   alignment: AlignmentDirectional.center,
@@ -184,7 +258,8 @@ class MakingPage extends StatelessWidget {
                         isSave: true,
                       );
                   EasyLoading.dismiss();
-                  finishSaverDialog(
+                  resultDialog(
+                    message: 'スパチャを保存しました',
                     context: context,
                     backCount: 0,
                   );
@@ -225,7 +300,20 @@ class MakingPage extends StatelessWidget {
         final isCorner = ref.watch(
           makingPageProvider.select((s) => s.isCorner),
         );
+        final isSaving = ref.watch(
+          makingPageProvider.select((s) => s.isSaving),
+        );
         final spacha = ref.watch(makingPageProvider.select((s) => s.spacha));
+
+        final limitHeight =
+            (MediaQuery.of(context).size.width - 32) * (2 * sqrt(2) - 1) / 3;
+        ref.listen(makingPageProvider.select((s) => s.spachaWidgetHeight),
+            (previous, next) {
+          ref.read(makingPageProvider.notifier).comparisonHeight(
+                height: next,
+                limitHeight: limitHeight,
+              );
+        });
         return Column(
           children: [
             _buildTransitionListItem(
@@ -249,7 +337,6 @@ class MakingPage extends StatelessWidget {
                 },
                 onTap: () {
                   FocusScope.of(context).requestFocus(nodeNameText);
-                  Scrollable.ensureVisible(nameFormKey.currentContext!);
                 },
                 focusNode: nodeNameText,
                 placeholder: '名前',
@@ -274,7 +361,6 @@ class MakingPage extends StatelessWidget {
                 },
                 onTap: () {
                   FocusScope.of(context).requestFocus(nodePriceText);
-                  Scrollable.ensureVisible(priceFormKey.currentContext!);
                 },
                 keyboardType: KeyboardType.numberPad,
                 focusNode: nodePriceText,
@@ -291,13 +377,12 @@ class MakingPage extends StatelessWidget {
               item: _buildTextInput(
                 context: context,
                 onChanged: (message) {
-                  ref
-                      .read(makingPageProvider.notifier)
-                      .messageEdited(message: message);
+                  ref.read(makingPageProvider.notifier).messageEdited(
+                        message: message,
+                      );
                 },
                 onTap: () {
                   FocusScope.of(context).requestFocus(nodeMessageText);
-                  Scrollable.ensureVisible(messageFormKey.currentContext!);
                 },
                 focusNode: nodeMessageText,
                 placeholder: 'メッセージ',
@@ -305,13 +390,30 @@ class MakingPage extends StatelessWidget {
                 controller: TextEditingController(text: spacha?.message ?? ''),
               ),
             ),
+            if (!isAblePdf) const Divider(),
+            if (!isAblePdf)
+              _buildTransitionListItem(
+                caption: '＊本文が長いのでPDF変換ができません',
+                textColor: error,
+                item: Container(),
+              ),
             const Divider(),
             _buildTransitionListItem(
               caption: '角の丸み',
-              item: _buildAccountTypeSwitch(
-                isCorner: isCorner,
+              item: _buildSwitch(
+                value: isCorner,
                 onChanged: (value) {
                   ref.read(makingPageProvider.notifier).switchCorner();
+                },
+              ),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: 'インクの節約',
+              item: _buildSwitch(
+                value: isSaving,
+                onChanged: (value) {
+                  ref.read(makingPageProvider.notifier).switchSaving();
                 },
               ),
             ),
@@ -344,7 +446,6 @@ class MakingPage extends StatelessWidget {
           ),
           //minHeightPadding: 4,
           //textCapitalization: TextCapitalization.sentences,
-
           placeholder: placeholder,
           placeholderColor: black.withOpacity(0.5),
           keyboardType: keyboardType ?? KeyboardType.defaultType,
@@ -365,49 +466,46 @@ class MakingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListItemForm({required String caption, required Widget item}) {
-    return Container(
-      height: 46,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          BodyText1Text(caption),
-          item,
-        ],
-      ),
-    );
-  }
-
   Widget _buildTransitionListItem({
     required String caption,
     void Function()? onTap,
     required Widget item,
+    Color? textColor,
   }) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: _buildListItemForm(
-        caption: caption,
-        item: item,
+      child: Container(
+        height: 46,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BodyText1Text(
+              caption,
+              color: textColor ?? black,
+            ),
+            item,
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAccountTypeSwitch({
-    required bool isCorner,
+  Widget _buildSwitch({
+    required bool value,
     required void Function(bool) onChanged,
   }) {
     return PlatformCheck.isAndroid
         ? Switch(
-            value: isCorner,
+            value: value,
             activeColor: spachaLightYellow,
             onChanged: (bool value) {
               onChanged(value);
             },
           )
         : Switch.adaptive(
-            value: isCorner,
+            value: value,
             activeColor: spachaLightYellow,
             onChanged: (bool value) {
               onChanged(value);

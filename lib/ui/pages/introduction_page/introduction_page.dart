@@ -18,22 +18,22 @@ class IntroductionPage extends ConsumerWidget {
         child: IntroductionScreen(
           pages: [
             PageViewModel(
-              title: 'スパチャメーカーについて',
+              title: 'アプリの説明',
               body: 'このアプリでは\nYouTubeの投げ銭機能でよく見る'
                   '\nスーパーチャット（スパチャ）の'
-                  '\n画像を作成・保存することができます！',
-              image: Assets.images.introductionSpacha.image(),
+                  '\n画像を作成・保存することができます',
+              image: Assets.images.introductionSpacha.image(width: 180),
               decoration: const PageDecoration(
-                pageColor: white,
+                pageColor: background,
               ),
             ),
             PageViewModel(
-              title: 'スパチャ封筒について',
-              body: 'オリジナルのスパチャ画像を使った\n封筒を印刷して作ることができます！'
+              title: 'スパチャ封筒',
+              body: 'オリジナルのスパチャ画像を使った\n封筒を印刷して作ることができます'
                   '\n（アプリから印刷するには\nwifi対応のコピー機が必要です）',
-              image: Assets.images.introductionEnvelope.image(),
+              image: Assets.images.introductionEnvelope.image(width: 250),
               decoration: const PageDecoration(
-                pageColor: white,
+                pageColor: background,
               ),
             ),
             //PageViewModel(),
@@ -68,7 +68,7 @@ class IntroductionPage extends ConsumerWidget {
               color: spachaLightYellow,
             ),
           ),
-          globalBackgroundColor: white,
+          globalBackgroundColor: background,
           dotsDecorator: DotsDecorator(
             size: const Size.square(10),
 

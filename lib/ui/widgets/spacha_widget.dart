@@ -137,37 +137,33 @@ Widget spachaWidget({
           ),
         ),
       ),
-      //if (price >= 200 && message != '')
-
-      Container(
-        height: height - 70,
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: isCorner
-              ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                )
-              : null,
-          color: widgetLightColor(),
+      //if (price >= 200)
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: height - 70,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
+        child: Container(
+          width: width,
+          decoration: BoxDecoration(
+            borderRadius: isCorner
+                ? const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  )
+                : null,
+            color: widgetLightColor(),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: BodyText1Text(
-                  message,
-                  //maxLines: 5,
-                  color: messageTextColor(),
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: BodyText1Text(
+              message,
+              //maxLines: 5,
+              color: messageTextColor(),
+              overflow: TextOverflow.fade,
+            ),
           ),
         ),
       ),

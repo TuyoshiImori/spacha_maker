@@ -20,6 +20,9 @@ class MakingPageState with _$MakingPageState {
     Spacha? spacha,
     File? iconImage,
     @Default(false) bool isCorner,
+    @Default(false) bool isSaving,
+    @Default(true) bool isAblePdf,
+    @Default(0) double spachaWidgetHeight,
   }) = _MakingPageState;
 }
 
@@ -76,12 +79,33 @@ class MakingPageController extends StateNotifier<MakingPageState> {
     state = state.copyWith(spacha: state.spacha?.copyWith(price: price));
   }
 
-  void messageEdited({required String message}) {
+  void setSpachaHeight({required double height}) {
+    state = state.copyWith(spachaWidgetHeight: height);
+  }
+
+  void messageEdited({
+    required String message,
+  }) {
     state = state.copyWith(spacha: state.spacha?.copyWith(message: message));
+  }
+
+  Future<void> comparisonHeight({
+    required double height,
+    required double limitHeight,
+  }) async {
+    if (limitHeight < height && state.isAblePdf) {
+      state = state.copyWith(isAblePdf: false);
+    } else if (limitHeight >= height && !state.isAblePdf) {
+      state = state.copyWith(isAblePdf: true);
+    }
   }
 
   void switchCorner() {
     state = state.copyWith(isCorner: !state.isCorner);
+  }
+
+  void switchSaving() {
+    state = state.copyWith(isSaving: !state.isSaving);
   }
 
   Future<Uint8List> exportToImage({
