@@ -33,8 +33,6 @@ class MakingPage extends StatelessWidget {
   final priceFormKey = GlobalKey();
   final messageFormKey = GlobalKey();
 
-  bool isAblePdf = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,18 +125,20 @@ class MakingPage extends StatelessWidget {
                         children: [
                           NotificationListener<SizeChangedLayoutNotification>(
                             onNotification: (notification) {
-                              print('notification: $notification');
-                              final height =
-                                  spachaWidgetKey.currentContext!.size!.height;
-                              final limitHeight =
-                                  (MediaQuery.of(context).size.width - 32) *
-                                      (2 * sqrt(2) - 1) /
-                                      3;
-                              if (height > limitHeight) {
-                                isAblePdf = false;
-                              } else {
-                                isAblePdf = true;
-                              }
+                              Future(() async {
+                                final height = spachaWidgetKey
+                                    .currentContext!.size!.height;
+                                final limitHeight =
+                                    (MediaQuery.of(context).size.width - 32) *
+                                        (2 * sqrt(2) - 1) /
+                                        3;
+                                await ref
+                                    .read(makingPageProvider.notifier)
+                                    .comparisonHeight(
+                                      height: height,
+                                      limitHeight: limitHeight,
+                                    );
+                              });
                               return true;
                             },
                             child: SizeChangedLayoutNotifier(
@@ -302,6 +302,9 @@ class MakingPage extends StatelessWidget {
         );
         final isSaving = ref.watch(
           makingPageProvider.select((s) => s.isSaving),
+        );
+        final isAblePdf = ref.watch(
+          makingPageProvider.select((s) => s.isAblePdf),
         );
         final spacha = ref.watch(makingPageProvider.select((s) => s.spacha));
 

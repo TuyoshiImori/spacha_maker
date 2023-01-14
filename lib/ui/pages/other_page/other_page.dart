@@ -120,6 +120,13 @@ class OtherPage extends StatelessWidget {
         return Column(
           children: [
             _buildTransitionListItem(
+              caption: '作成者のTwitter',
+              onTap: () async {
+                await openLinkBrowser(url: 'https://twitter.com/imorin_basson');
+              },
+            ),
+            const Divider(),
+            _buildTransitionListItem(
               caption: '不具合・お問い合わせ',
               onTap: () async {
                 await urlLauncherMail(

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -12,6 +14,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ja</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>spacha_maker</string>
 	<key>CFBundlePackageType</key>
@@ -24,22 +31,21 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
-	<key>CFBundleLocalizations</key>
-    <array>
-       	<string>en</string>
-        <string>ja</string>
-    </array>
-
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
-    <string>プロフィール写真の設定や写真の投稿に使用します。</string>
-   	<key>NSMicrophoneUsageDescription</key>
-   	<string>このアプリはマイクを使用します</string>
-   	<key>NSPhotoLibraryUsageDescription</key>
-    <string>プロフィール写真の設定や写真の投稿に使用します。</string>
-   	<key>NSUserTrackingUsageDescription</key>
-   	<string>利用者の特性に合わせた最適なコンテンツをお届けするために使用します。</string>
-
+	<string>プロフィール写真の設定や写真の投稿に使用します。</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>このアプリはマイクを使用します</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>プロフィール写真の設定や写真の投稿に使用します。</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>利用者の特性に合わせた最適なコンテンツをお届けするために使用します。</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -59,14 +65,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSAppTransportSecurity</key>
-      <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-      </dict>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>
