@@ -99,10 +99,8 @@ class OtherPage extends StatelessWidget {
               caption: 'このアプリをシェアする',
               onTap: () async {
                 final box = context.findRenderObject() as RenderBox?;
-
-                ///TODO アプリのURLに変更
                 await Share.share(
-                  'ほげほげ',
+                  'https://apps.apple.com/jp/app/%E3%82%B9%E3%83%91%E3%83%81%E3%83%A3%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC/id1665374806',
                   sharePositionOrigin:
                       box!.localToGlobal(Offset.zero) & box.size,
                 );

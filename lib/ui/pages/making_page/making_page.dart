@@ -41,7 +41,7 @@ class MakingPage extends StatelessWidget {
         preferredSize: const Size.fromHeight(44),
         child: AppBar(
           elevation: 0,
-          title: const Subtitle1Text('スパチャメーカー'),
+          title: const Subtitle1Text('編集'),
           actions: [
             GestureDetector(
               onTap: () {
