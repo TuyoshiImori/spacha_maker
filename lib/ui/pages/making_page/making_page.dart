@@ -447,8 +447,6 @@ class MakingPage extends StatelessWidget {
             fontSize: 16,
             color: black,
           ),
-          //minHeightPadding: 4,
-          //textCapitalization: TextCapitalization.sentences,
           placeholder: placeholder,
           placeholderColor: black.withOpacity(0.5),
           keyboardType: keyboardType ?? KeyboardType.defaultType,
@@ -460,6 +458,8 @@ class MakingPage extends StatelessWidget {
           onChanged: (name) async {
             onChanged(name);
           },
+          textCapitalization: TextCapitalization.sentences,
+          returnKeyType: ReturnKeyType.defaultAction,
           onTap: () {
             onTap();
           },

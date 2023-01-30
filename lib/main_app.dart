@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -17,7 +18,9 @@ class MainApp extends ConsumerWidget {
     ref.read(appProvider.notifier).haveSeenIntro();
     final haveSeenIntro = ref.watch(appProvider.select((s) => s.haveSeenIntro));
     return MaterialApp(
+      useInheritedMediaQuery: true,
       title: 'spacha_maker',
+      locale: DevicePreview.locale(context),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -29,12 +32,9 @@ class MainApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.generateRoute,
       home: haveSeenIntro ? MakingPage() : const IntroductionPage(),
-      //builder: EasyLoading.init(),
       builder: (context, child) {
-        child = EasyLoading.init()(
-          context,
-          child,
-        );
+        child = EasyLoading.init()(context, child);
+        child = DevicePreview.appBuilder(context, child);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
           child: child,
