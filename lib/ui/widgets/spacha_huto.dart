@@ -8,7 +8,7 @@ import 'package:spacha_maker/ui/widgets/custom_paint/bottom_upper_right_diagonal
 import 'package:spacha_maker/ui/widgets/custom_paint/upper_left_diagonal_line.dart';
 import 'package:spacha_maker/ui/widgets/custom_paint/upper_right_diagonal_line.dart';
 
-Widget spachaEnvelope({
+Widget spachaHuto({
   required BuildContext context,
   required int price,
   required Uint8List spachaWidget,

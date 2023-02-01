@@ -24,11 +24,7 @@ final printingPageProvider = StateNotifierProvider.autoDispose<
 });
 
 class PrintingPageController extends StateNotifier<PrintingPageState> {
-  PrintingPageController() : super(const PrintingPageState()) {
-    _init();
-  }
-
-  Future<void> _init() async {}
+  PrintingPageController() : super(const PrintingPageState());
 
   Future<Uint8List> exportToImage({
     required RenderRepaintBoundary boundary,
