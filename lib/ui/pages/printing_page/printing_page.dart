@@ -14,12 +14,12 @@ import 'package:spacha_maker/utils/theme_text.dart';
 class PrintingArguments {
   PrintingArguments({
     required this.spacha,
-    required this.spachaWidget,
+    required this.spachaImage,
     required this.isSaving,
   });
 
   final Spacha spacha;
-  final Uint8List spachaWidget;
+  final Uint8List spachaImage;
   final bool isSaving;
 }
 
@@ -102,7 +102,7 @@ class PrintingPage extends StatelessWidget {
     final pdf = pw.Document()
       ..addPage(
         page(
-          uint8list: printingArguments.spachaWidget,
+          uint8list: printingArguments.spachaImage,
           context: context,
           isSaving: printingArguments.isSaving,
           price: printingArguments.spacha.price,
@@ -183,8 +183,6 @@ class PrintingPage extends StatelessWidget {
         return pw.FullPage(
           ignoreMargins: true,
           child: pw.Container(
-            height: height * 2,
-            width: width * 2,
             decoration: pw.BoxDecoration(
               color: widgetLightColor(),
             ),
@@ -311,6 +309,21 @@ class PrintingPage extends StatelessWidget {
                         ),
                       ),
                       child: buildUpperRightLine(),
+                    ),
+                  ],
+                ),
+
+                /// これがないとなぜか右下のcustompaintが表示されない
+                pw.Column(
+                  children: [
+                    pw.Container(
+                      width: 1,
+                      height: 1,
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          bottom: pw.BorderSide(width: 0.7),
+                        ),
+                      ),
                     ),
                   ],
                 ),

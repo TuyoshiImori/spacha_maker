@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -24,12 +23,8 @@ Future<void> main() async {
     ..userInteractions = false;
 
   runApp(
-    DevicePreview(
-      builder: (context) {
-        return const ProviderScope(
-          child: MainApp(),
-        );
-      },
+    const ProviderScope(
+      child: MainApp(),
     ),
   );
 }

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,6 +38,10 @@ class MakingPageController extends StateNotifier<MakingPageState> {
   MakingPageController() : super(const MakingPageState()) {
     _init();
   }
+
+  final nameFormKey = GlobalKey();
+  final priceFormKey = GlobalKey();
+  final messageFormKey = GlobalKey();
 
   Future<void> _init() async {
     ///アプリのトラッキング

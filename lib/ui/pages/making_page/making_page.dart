@@ -29,10 +29,6 @@ class MakingPage extends StatelessWidget {
   final spachaWidgetKey = GlobalKey();
   final spachaImageWidgetKey = GlobalKey();
 
-  final nameFormKey = GlobalKey();
-  final priceFormKey = GlobalKey();
-  final messageFormKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,7 +199,7 @@ class MakingPage extends StatelessWidget {
                     );
                     final boundary = spachaImageWidgetKey.currentContext!
                         .findRenderObject()! as RenderRepaintBoundary;
-                    final spachaWidget = await ref
+                    final spachaImage = await ref
                         .read(makingPageProvider.notifier)
                         .exportToImage(
                           boundary: boundary,
@@ -212,7 +208,7 @@ class MakingPage extends StatelessWidget {
                         );
                     final printingArguments = PrintingArguments(
                       spacha: spacha ?? const Spacha(),
-                      spachaWidget: spachaWidget,
+                      spachaImage: spachaImage,
                       isSaving: isSaving,
                     );
                     await EasyLoading.dismiss();
@@ -343,7 +339,7 @@ class MakingPage extends StatelessWidget {
                 },
                 focusNode: nodeNameText,
                 placeholder: '名前',
-                formKey: nameFormKey,
+                formKey: ref.read(makingPageProvider.notifier).nameFormKey,
                 controller: TextEditingController(text: spacha?.name ?? ''),
               ),
             ),
@@ -368,7 +364,7 @@ class MakingPage extends StatelessWidget {
                 keyboardType: KeyboardType.numberPad,
                 focusNode: nodePriceText,
                 placeholder: '金額',
-                formKey: priceFormKey,
+                formKey: ref.read(makingPageProvider.notifier).priceFormKey,
                 controller: TextEditingController(
                   text: spacha?.price.toString(),
                 ),
@@ -389,7 +385,7 @@ class MakingPage extends StatelessWidget {
                 },
                 focusNode: nodeMessageText,
                 placeholder: 'メッセージ',
-                formKey: messageFormKey,
+                formKey: ref.read(makingPageProvider.notifier).messageFormKey,
                 controller: TextEditingController(text: spacha?.message ?? ''),
               ),
             ),
