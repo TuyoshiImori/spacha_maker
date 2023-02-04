@@ -25,9 +25,33 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/app_icon.jpg
-  AssetGenImage get appIcon =>
-      const AssetGenImage('assets/images/app_icon.jpg');
+  /// File path: assets/images/app_blue_icon.jpg
+  AssetGenImage get appBlueIcon =>
+      const AssetGenImage('assets/images/app_blue_icon.jpg');
+
+  /// File path: assets/images/app_cyan_icon.jpg
+  AssetGenImage get appCyanIcon =>
+      const AssetGenImage('assets/images/app_cyan_icon.jpg');
+
+  /// File path: assets/images/app_green_icon.jpg
+  AssetGenImage get appGreenIcon =>
+      const AssetGenImage('assets/images/app_green_icon.jpg');
+
+  /// File path: assets/images/app_magenta_icon.jpg
+  AssetGenImage get appMagentaIcon =>
+      const AssetGenImage('assets/images/app_magenta_icon.jpg');
+
+  /// File path: assets/images/app_orange_icon.jpg
+  AssetGenImage get appOrangeIcon =>
+      const AssetGenImage('assets/images/app_orange_icon.jpg');
+
+  /// File path: assets/images/app_red_icon.jpg
+  AssetGenImage get appRedIcon =>
+      const AssetGenImage('assets/images/app_red_icon.jpg');
+
+  /// File path: assets/images/app_yellow_icon.jpg
+  AssetGenImage get appYellowIcon =>
+      const AssetGenImage('assets/images/app_yellow_icon.jpg');
 
   /// File path: assets/images/introduction_envelope.jpg
   AssetGenImage get introductionEnvelope =>
@@ -42,8 +66,18 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/pdf_file.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [appIcon, introductionEnvelope, introductionSpacha, pdfFile];
+  List<AssetGenImage> get values => [
+        appBlueIcon,
+        appCyanIcon,
+        appGreenIcon,
+        appMagentaIcon,
+        appOrangeIcon,
+        appRedIcon,
+        appYellowIcon,
+        introductionEnvelope,
+        introductionSpacha,
+        pdfFile
+      ];
 }
 
 class Assets {

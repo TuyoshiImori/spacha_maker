@@ -6,9 +6,7 @@ ThemeData theme(BuildContext context) => ThemeData(
       brightness: Brightness.light,
       primaryColor: background,
       dividerColor: divider,
-      errorColor: error,
       scaffoldBackgroundColor: background,
-      backgroundColor: background,
       iconTheme: const IconThemeData(
         // color: tsukuttaOrange,
         size: 30,
@@ -47,79 +45,79 @@ ThemeData theme(BuildContext context) => ThemeData(
           //selectionHandleColor: AppColors.selectionHandleColor,
           ),
       textTheme: const TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 40,
           fontWeight: FontWeight.bold,
           letterSpacing: -1.5,
           color: textPrimary,
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           fontSize: 36,
           fontWeight: FontWeight.bold,
           letterSpacing: -0.5,
           color: textPrimary,
         ),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.bold,
           letterSpacing: 0,
           color: textPrimary,
         ),
-        headline4: TextStyle(
+        headlineMedium: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.25,
           color: textPrimary,
         ),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           letterSpacing: 0,
           color: textPrimary,
         ),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.15,
           color: textPrimary,
         ),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
           letterSpacing: 0.15,
           color: textPrimary,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.normal,
           letterSpacing: 0.15,
           color: textPrimary,
         ),
-        subtitle1: TextStyle(
+        titleMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.15,
           color: textPrimary,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.1,
           color: textPrimary,
         ),
-        button: TextStyle(
+        labelLarge: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.25,
           color: textPrimary,
         ),
-        caption: TextStyle(
+        bodySmall: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.normal,
           letterSpacing: 0.4,
           color: textPrimary,
         ),
-        overline: TextStyle(
+        labelSmall: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.normal,
           letterSpacing: 1.5,
