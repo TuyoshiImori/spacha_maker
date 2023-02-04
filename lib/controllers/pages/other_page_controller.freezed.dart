@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$OtherPageState {
   bool get isAvailable => throw _privateConstructorUsedError;
+  int get iconIndex => throw _privateConstructorUsedError;
+  List<String> get iconName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $OtherPageStateCopyWith<OtherPageState> get copyWith =>
@@ -29,7 +31,7 @@ abstract class $OtherPageStateCopyWith<$Res> {
           OtherPageState value, $Res Function(OtherPageState) then) =
       _$OtherPageStateCopyWithImpl<$Res, OtherPageState>;
   @useResult
-  $Res call({bool isAvailable});
+  $Res call({bool isAvailable, int iconIndex, List<String> iconName});
 }
 
 /// @nodoc
@@ -46,12 +48,22 @@ class _$OtherPageStateCopyWithImpl<$Res, $Val extends OtherPageState>
   @override
   $Res call({
     Object? isAvailable = null,
+    Object? iconIndex = null,
+    Object? iconName = null,
   }) {
     return _then(_value.copyWith(
       isAvailable: null == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
+      iconIndex: null == iconIndex
+          ? _value.iconIndex
+          : iconIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      iconName: null == iconName
+          ? _value.iconName
+          : iconName // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -64,7 +76,7 @@ abstract class _$$_OtherPageStateCopyWith<$Res>
       __$$_OtherPageStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isAvailable});
+  $Res call({bool isAvailable, int iconIndex, List<String> iconName});
 }
 
 /// @nodoc
@@ -79,12 +91,22 @@ class __$$_OtherPageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isAvailable = null,
+    Object? iconIndex = null,
+    Object? iconName = null,
   }) {
     return _then(_$_OtherPageState(
       isAvailable: null == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
+      iconIndex: null == iconIndex
+          ? _value.iconIndex
+          : iconIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      iconName: null == iconName
+          ? _value._iconName
+          : iconName // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -92,15 +114,38 @@ class __$$_OtherPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_OtherPageState implements _OtherPageState {
-  const _$_OtherPageState({this.isAvailable = false});
+  const _$_OtherPageState(
+      {this.isAvailable = false,
+      this.iconIndex = 0,
+      final List<String> iconName = const <String>[
+        'app_blue_icon',
+        'app_cyan_icon',
+        'app_green_icon',
+        'app_yellow_icon',
+        'app_orange_icon',
+        'app_magenta_icon',
+        'app_red_icon'
+      ]})
+      : _iconName = iconName;
 
   @override
   @JsonKey()
   final bool isAvailable;
+  @override
+  @JsonKey()
+  final int iconIndex;
+  final List<String> _iconName;
+  @override
+  @JsonKey()
+  List<String> get iconName {
+    if (_iconName is EqualUnmodifiableListView) return _iconName;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_iconName);
+  }
 
   @override
   String toString() {
-    return 'OtherPageState(isAvailable: $isAvailable)';
+    return 'OtherPageState(isAvailable: $isAvailable, iconIndex: $iconIndex, iconName: $iconName)';
   }
 
   @override
@@ -109,11 +154,15 @@ class _$_OtherPageState implements _OtherPageState {
         (other.runtimeType == runtimeType &&
             other is _$_OtherPageState &&
             (identical(other.isAvailable, isAvailable) ||
-                other.isAvailable == isAvailable));
+                other.isAvailable == isAvailable) &&
+            (identical(other.iconIndex, iconIndex) ||
+                other.iconIndex == iconIndex) &&
+            const DeepCollectionEquality().equals(other._iconName, _iconName));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAvailable);
+  int get hashCode => Object.hash(runtimeType, isAvailable, iconIndex,
+      const DeepCollectionEquality().hash(_iconName));
 
   @JsonKey(ignore: true)
   @override
@@ -123,10 +172,17 @@ class _$_OtherPageState implements _OtherPageState {
 }
 
 abstract class _OtherPageState implements OtherPageState {
-  const factory _OtherPageState({final bool isAvailable}) = _$_OtherPageState;
+  const factory _OtherPageState(
+      {final bool isAvailable,
+      final int iconIndex,
+      final List<String> iconName}) = _$_OtherPageState;
 
   @override
   bool get isAvailable;
+  @override
+  int get iconIndex;
+  @override
+  List<String> get iconName;
   @override
   @JsonKey(ignore: true)
   _$$_OtherPageStateCopyWith<_$_OtherPageState> get copyWith =>

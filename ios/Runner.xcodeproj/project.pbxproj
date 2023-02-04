@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		2DE47A10298E8C800097C413 /* app_blue_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A0F298E8C800097C413 /* app_blue_icon.jpg */; };
+		2DE47A12298E8C880097C413 /* app_cyan_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A11298E8C880097C413 /* app_cyan_icon.jpg */; };
+		2DE47A14298E8C8C0097C413 /* app_green_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A13298E8C8C0097C413 /* app_green_icon.jpg */; };
+		2DE47A16298E8C900097C413 /* app_magenta_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A15298E8C900097C413 /* app_magenta_icon.jpg */; };
+		2DE47A18298E8C960097C413 /* app_orange_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A17298E8C960097C413 /* app_orange_icon.jpg */; };
+		2DE47A1A298E8C9B0097C413 /* app_red_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A19298E8C9B0097C413 /* app_red_icon.jpg */; };
+		2DE47A1C298E8CA10097C413 /* app_yellow_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DE47A1B298E8CA10097C413 /* app_yellow_icon.jpg */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		78F8D708A5968784E5AAC163 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFAA51A40BBC3F71679208B /* Pods_Runner.framework */; };
@@ -35,6 +42,13 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		2DCBFDF22974BD62004EEEC0 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		2DE47A0F298E8C800097C413 /* app_blue_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_blue_icon.jpg; sourceTree = "<group>"; };
+		2DE47A11298E8C880097C413 /* app_cyan_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_cyan_icon.jpg; sourceTree = "<group>"; };
+		2DE47A13298E8C8C0097C413 /* app_green_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_green_icon.jpg; sourceTree = "<group>"; };
+		2DE47A15298E8C900097C413 /* app_magenta_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_magenta_icon.jpg; sourceTree = "<group>"; };
+		2DE47A17298E8C960097C413 /* app_orange_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_orange_icon.jpg; sourceTree = "<group>"; };
+		2DE47A19298E8C9B0097C413 /* app_red_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_red_icon.jpg; sourceTree = "<group>"; };
+		2DE47A1B298E8CA10097C413 /* app_yellow_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = app_yellow_icon.jpg; sourceTree = "<group>"; };
 		374C5581575F0B7664EE063B /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -103,6 +117,13 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				2DE47A1B298E8CA10097C413 /* app_yellow_icon.jpg */,
+				2DE47A19298E8C9B0097C413 /* app_red_icon.jpg */,
+				2DE47A17298E8C960097C413 /* app_orange_icon.jpg */,
+				2DE47A15298E8C900097C413 /* app_magenta_icon.jpg */,
+				2DE47A13298E8C8C0097C413 /* app_green_icon.jpg */,
+				2DE47A11298E8C880097C413 /* app_cyan_icon.jpg */,
+				2DE47A0F298E8C800097C413 /* app_blue_icon.jpg */,
 				2DCBFDF22974BD62004EEEC0 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -189,10 +210,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DE47A16298E8C900097C413 /* app_magenta_icon.jpg in Resources */,
+				2DE47A1C298E8CA10097C413 /* app_yellow_icon.jpg in Resources */,
+				2DE47A10298E8C800097C413 /* app_blue_icon.jpg in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				2DE47A1A298E8C9B0097C413 /* app_red_icon.jpg in Resources */,
+				2DE47A12298E8C880097C413 /* app_cyan_icon.jpg in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
+				2DE47A14298E8C8C0097C413 /* app_green_icon.jpg in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				2DE47A18298E8C960097C413 /* app_orange_icon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

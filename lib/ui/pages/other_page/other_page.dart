@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:spacha_maker/controllers/pages/other_page_controller.dart';
+import 'package:spacha_maker/gen/assets.gen.dart';
 import 'package:spacha_maker/routes.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 import 'package:spacha_maker/utils/theme_text.dart';
@@ -49,6 +50,8 @@ class OtherPage extends StatelessWidget {
   Widget _buildUserSetting() {
     return Consumer(
       builder: (context, ref, _) {
+        final iconIndex =
+            ref.watch(otherPageProvider.select((s) => s.iconIndex));
         return Column(
           children: [
             _buildTransitionListItem(
@@ -56,6 +59,83 @@ class OtherPage extends StatelessWidget {
               onTap: () async {
                 await openAppSettings();
               },
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 0);
+              },
+              appIcon: Assets.images.appBlueIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 0),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 1);
+              },
+              appIcon: Assets.images.appCyanIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 1),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 2);
+              },
+              appIcon: Assets.images.appGreenIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 2),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 3);
+              },
+              appIcon: Assets.images.appYellowIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 3),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 4);
+              },
+              appIcon: Assets.images.appOrangeIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 4),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 5);
+              },
+              appIcon: Assets.images.appMagentaIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 5),
+            ),
+            const Divider(),
+            _buildTransitionListItem(
+              caption: '',
+              onTap: () async {
+                await ref
+                    .read(otherPageProvider.notifier)
+                    .changeAppIcon(iconIndex: 5);
+              },
+              appIcon: Assets.images.appRedIcon.image(height: 30),
+              selectedIcon: _buildSelectedIcon(iconIndex: iconIndex, index: 5),
             ),
           ],
         );
@@ -170,33 +250,43 @@ class OtherPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListItemForm({required String caption, required Widget button}) {
-    return Container(
-      height: 46,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          BodyText1Text(caption),
-          button,
-        ],
-      ),
-    );
+  Widget _buildSelectedIcon({required int iconIndex, required int index}) {
+    return iconIndex == index
+        ? const Icon(
+            Icons.check_circle_rounded,
+            color: Colors.green,
+            size: 30,
+          )
+        : Icon(
+            Icons.circle_outlined,
+            color: Colors.grey.withOpacity(0.5),
+            size: 30,
+          );
   }
 
   Widget _buildTransitionListItem({
     required String caption,
     required void Function() onTap,
+    Widget? appIcon,
+    Widget? selectedIcon,
   }) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: _buildListItemForm(
-        caption: caption,
-        button: const Icon(
-          Icons.keyboard_arrow_right,
-          size: 20,
-          color: grey,
+      child: Container(
+        height: 46,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            appIcon ?? BodyText1Text(caption),
+            selectedIcon ??
+                const Icon(
+                  Icons.keyboard_arrow_right,
+                  size: 20,
+                  color: grey,
+                ),
+          ],
         ),
       ),
     );
