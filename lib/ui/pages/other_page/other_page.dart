@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
@@ -14,12 +14,13 @@ class OtherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(44),
-        child: AppBar(
-          elevation: 0,
-        ),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(44),
+      //   child: AppBar(
+      //     elevation: 0,
+      //   ),
+      // ),
+      appBar: NeumorphicAppBar(),
       body: _settingPageBody(context),
     );
   }
@@ -185,7 +186,10 @@ class OtherPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            appIcon ?? BodyText1Text(caption),
+            appIcon ??
+                BodyText1Text(
+                  caption,
+                ),
             selectedIcon ??
                 const Icon(
                   Icons.keyboard_arrow_right,

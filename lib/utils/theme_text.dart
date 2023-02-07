@@ -14,7 +14,7 @@ class Headline1Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 3,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -33,7 +33,7 @@ class Headline1Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline1?.copyWith(color: color),
+        style: _getTheme(context).displayLarge?.copyWith(color: color),
       ),
     );
   }
@@ -47,7 +47,7 @@ class Headline2Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 3,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -66,7 +66,7 @@ class Headline2Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline2?.copyWith(color: color),
+        style: _getTheme(context).displayMedium?.copyWith(color: color),
       ),
     );
   }
@@ -80,7 +80,7 @@ class Headline3Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 3,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -99,7 +99,7 @@ class Headline3Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline3?.copyWith(color: color),
+        style: _getTheme(context).displaySmall?.copyWith(color: color),
       ),
     );
   }
@@ -113,7 +113,7 @@ class Headline4Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -132,7 +132,7 @@ class Headline4Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline4?.copyWith(color: color),
+        style: _getTheme(context).headlineMedium?.copyWith(color: color),
       ),
     );
   }
@@ -146,7 +146,7 @@ class Headline5Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -165,7 +165,7 @@ class Headline5Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline5?.copyWith(color: color),
+        style: _getTheme(context).headlineSmall?.copyWith(color: color),
       ),
     );
   }
@@ -179,7 +179,7 @@ class Headline6Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -198,7 +198,7 @@ class Headline6Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).headline6?.copyWith(color: color),
+        style: _getTheme(context).titleLarge?.copyWith(color: color),
       ),
     );
   }
@@ -212,7 +212,7 @@ class Subtitle1Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -231,7 +231,7 @@ class Subtitle1Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).subtitle1?.copyWith(color: color),
+        style: _getTheme(context).titleMedium?.copyWith(color: color),
       ),
     );
   }
@@ -245,7 +245,7 @@ class Subtitle2Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -264,7 +264,7 @@ class Subtitle2Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).subtitle2?.copyWith(color: color),
+        style: _getTheme(context).titleSmall?.copyWith(color: color),
       ),
     );
   }
@@ -278,7 +278,7 @@ class BodyText1Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -297,7 +297,7 @@ class BodyText1Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).bodyText1?.copyWith(color: color),
+        style: _getTheme(context).bodyLarge?.copyWith(color: color),
       ),
     );
   }
@@ -311,7 +311,7 @@ class BodyText2Text extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -330,7 +330,7 @@ class BodyText2Text extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).bodyText2?.copyWith(color: color),
+        style: _getTheme(context).bodyMedium?.copyWith(color: color),
       ),
     );
   }
@@ -344,7 +344,7 @@ class CaptionText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -363,7 +363,7 @@ class CaptionText extends StatelessWidget {
         textAlign: textAlign,
         overflow: overflow,
         maxLines: maxLines,
-        style: _getTheme(context).caption?.copyWith(color: color),
+        style: _getTheme(context).bodySmall?.copyWith(color: color),
       ),
     );
   }
@@ -377,7 +377,7 @@ class OverlineText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 1,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -396,7 +396,7 @@ class OverlineText extends StatelessWidget {
         textAlign: textAlign,
         overflow: overflow,
         maxLines: maxLines,
-        style: _getTheme(context).overline?.copyWith(color: color),
+        style: _getTheme(context).labelSmall?.copyWith(color: color),
       ),
     );
   }
@@ -410,7 +410,7 @@ class ButtonText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.overflow,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
@@ -429,7 +429,7 @@ class ButtonText extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: overflow,
-        style: _getTheme(context).button?.copyWith(color: color),
+        style: _getTheme(context).labelLarge?.copyWith(color: color),
       ),
     );
   }
@@ -449,7 +449,7 @@ class CustomText extends StatelessWidget {
     this.letterSpacing,
     this.wordSpacing,
     this.decoration,
-    this.bottomPadding = 2,
+    this.bottomPadding = 0,
   });
 
   final String? text;
