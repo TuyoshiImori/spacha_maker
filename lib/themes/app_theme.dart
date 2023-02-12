@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spacha_maker/themes/app_colors.dart';
 
 ThemeData theme(BuildContext context) => ThemeData(
-      //colorScheme: const ColorScheme.light().copyWith(secondary: secondary),
       brightness: Brightness.light,
       primaryColor: background,
       dividerColor: divider,
