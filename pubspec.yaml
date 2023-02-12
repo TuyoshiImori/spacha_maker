@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   flutter_native_splash: ^2.2.16
   flutter_native_text_input: ^2.4.0
+  freezed: ^2.3.2
   freezed_annotation: ^2.2.0
   hooks_riverpod: ^2.1.3
   image: ^3.0.1
@@ -38,6 +39,7 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.11
   pdf: ^3.8.4
+  pedantic_mono: ^1.20.1
   permission_handler: ^10.2.0
   printing: ^5.9.3
   riverpod: ^2.1.3
@@ -52,11 +54,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.3.2
-  pedantic_mono: ^1.20.1
 
 flutter_icons:
-  image_path: assets/images/app_yellow_icon.png
+  image_path: assets/images/app_icon.jpg
   ios: true
   android: true
 
@@ -67,5 +67,3 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/images/
-    - assets/movies/
-    - assets/lotties/
