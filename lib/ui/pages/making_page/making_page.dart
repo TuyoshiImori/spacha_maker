@@ -100,7 +100,8 @@ class MakingPage extends StatelessWidget {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   //FocusScope.of(context).unfocus();
-                  FocusManager.instance.primaryFocus?.unfocus();
+                  //FocusManager.instance.primaryFocus?.unfocus();
+                  FocusScope.of(context).unfocus();
                 },
                 child: KeyboardActions(
                   config: keyboardActionsConfig(
@@ -434,7 +435,7 @@ class MakingPage extends StatelessWidget {
   }) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * (3 / 5),
-      height: 56,
+      height: 46,
       child: Center(
         child: NativeTextInput(
           controller: controller,
@@ -460,6 +461,7 @@ class MakingPage extends StatelessWidget {
             onTap();
           },
           focusNode: PlatformCheck.isIOS ? focusNode : null,
+          maxLines: 100,
         ),
       ),
     );

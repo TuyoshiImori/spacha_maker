@@ -30,8 +30,9 @@ KeyboardActionsItem keyboardActionsItem({
       (node) {
         return GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus();
-            //FocusManager.instance.primaryFocus?.unfocus();
+            if (focusNode.hasFocus) {
+              FocusScope.of(context).unfocus();
+            }
           },
           child: const Padding(
             padding: EdgeInsets.only(right: 16, top: 8, bottom: 8),
